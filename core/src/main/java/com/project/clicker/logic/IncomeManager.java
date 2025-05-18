@@ -16,4 +16,8 @@ public class IncomeManager {
             timer -= ticks;
         }
     }
+
+    public void addMoneyFromClick() {
+        state.addMoney(1);
+    }
 }
