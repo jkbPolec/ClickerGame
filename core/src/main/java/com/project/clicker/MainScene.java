@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import com.project.clicker.ui.TableFactory;
+
 public class MainScene implements Screen {
     private Stage stage;
     private Skin skin;
@@ -39,13 +41,23 @@ public class MainScene implements Screen {
 
         });
 
-        Table table = new Table();
-        table.setFillParent(true);
-        table.center();
-        table.add(clickLabel).padBottom(20).row();
-        table.add(clickButton);
 
-        stage.addActor(table);
+        TableFactory tableFactory = new TableFactory(skin);
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.top().left();
+
+        Table menuTable = tableFactory.createScrollableMenu("Menu", "Start", "Ustawienia", "Wyjście", "Pomoc",
+            "O grze", "Statystyki", "O autorze", "Kontakt", "Wersja", "Informacje", "Zgłoś błąd", "Zamknij grę");
+        Table clickerTable = new Table();
+        clickerTable.add(clickLabel).row();
+        clickerTable.add(clickButton);
+
+        mainTable.add(menuTable).expand().left().padTop(50);
+        mainTable.add(clickerTable).expand().right().center();
+
+        stage.addActor(mainTable);
 
     }
 
