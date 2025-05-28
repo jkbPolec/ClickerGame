@@ -2,13 +2,12 @@ package com.project.clicker.ui;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.project.clicker.UpgradeFactory;
 import com.project.clicker.logic.GameState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,10 +19,13 @@ public class Hud {
     private Label clickLabel;
     private GameState state;
     private IncomeManager incomeManager;
+    private UpgradeFactory upgradeFactory;
 
-    public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager) {
+    public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
         this.stage = new Stage(viewport);
         this.state = state;
+        this.incomeManager = incomeManager;
+        this.upgradeFactory = upgradeFactory;
 
         Table table = new Table();
         table.setFillParent(true);
@@ -39,14 +41,25 @@ public class Hud {
                 incomeManager.addMoneyFromClick();
                 clickLabel.setText("Kliknięcia: " + state.getClicks());
             }
+        });
 
-
+        // Nowy przycisk do ulepszeń
+        TextButton upgradeButton = new TextButton("Ulepsz", skin);
+        upgradeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                state.getUpgrades().stream()
+                    .filter(u -> u.getName().equals("Passive Income Boost"))
+                    .findFirst()
+                    .ifPresent(upgradeFactory::applyUpgrade);
+            }
         });
 
         moneyLabel = new Label("Money: 0", skin);
         table.bottom().left();
         table.add(clickLabel).padBottom(20).row();
         table.add(clickButton).row();
+        table.add(upgradeButton).padTop(10).row(); // dodanie przycisku
         table.add(moneyLabel).padLeft(60f).padBottom(40f).row();
     }
 
@@ -69,3 +82,4 @@ public class Hud {
         stage.dispose();
     }
 }
+

@@ -11,18 +11,23 @@ public class MainScene implements Screen {
     private Main game;
     private GameState state;
     private IncomeManager incomeManager;
+    private PopulationManager populationManager;
     private Hud hud;
+    private UpgradeFactory upgradeFactory;
 
     public MainScene(Main game) {
         this.game = game;
         this.state = new GameState();
         this.incomeManager = new IncomeManager(state);
+        this.populationManager = new PopulationManager(state);
+        this.upgradeFactory = new UpgradeFactory(state, incomeManager, populationManager);
+        this.upgradeFactory.initializeUpgrades();
     }
 
     @Override
     public void show() {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        hud = new Hud(new ScreenViewport(), skin, state, incomeManager);
+        hud = new Hud(new ScreenViewport(), skin, state, incomeManager, upgradeFactory);
         Gdx.input.setInputProcessor(hud.getStage());
     }
 
