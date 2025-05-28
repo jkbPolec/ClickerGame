@@ -36,9 +36,18 @@ public class TableFactory {
         table.add(title).padBottom(30).row();
 
         for (String label : buttonLabels) {
+            Table buttonTable = new Table();
             TextButton button = new TextButton(label, skin);
-            table.add(button).pad(10).row();
+            Label description = new Label("Level: " + label, skin, "upgrade-description"); // Przykładowy opis
+            description.setFontScale(0.7f);
+            buttonTable.add(button).expand().left();
+            buttonTable.add(description).expand().right(); // Dodaj opis pod przyciskiem
+            buttonTable.setBackground(skin.getDrawable("button"));
+            table.add(buttonTable).size(400,75).pad(10).row();
+            //table.add(button).pad(10).row();
         }
+
+
 
         ScrollPane scrollPane = new ScrollPane(table, skin);
         scrollPane.setFadeScrollBars(false);
@@ -49,6 +58,7 @@ public class TableFactory {
         container.top().padTop(50);
         container.add(scrollPane).grow(); // scrollPane zajmie całą dostępną przestrzeń
 
+        container.setSize(100, 100);
         return container;
     }
 

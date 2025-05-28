@@ -47,20 +47,21 @@ public class MainScene implements Screen {
         TextureFactory textureFactory = new TextureFactory();
 
         Table mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.top().left();
-
+        //mainTable.setFillParent(true);
+        //mainTable.top().left();
+        mainTable.setSize(1920,1080);
         Table menuTable = tableFactory.createScrollableMenu("Menu", "Start", "Ustawienia", "Wyjście", "Pomoc",
             "O grze", "Statystyki", "O autorze", "Kontakt", "Wersja", "Informacje", "Zgłoś błąd", "Zamknij grę");
         Table clickerTable = new Table();
         clickerTable.add(clickLabel).row();
         clickerTable.add(clickButton);
-
+        //clickerTable.setFillParent(true);
         clickerTable.setBackground(textureFactory.createPlainTextureRegionDrawable("BLUE"));
 
-        mainTable.add(menuTable).expand().left().padTop(50);
-        mainTable.add(clickerTable).expand().right().center();
+        mainTable.add(menuTable).expand().left().padTop(50).padLeft(50).size(440, 1000);
+        mainTable.add(clickerTable).expand().size(100,100);
 
+        mainTable.setBackground(textureFactory.createPlainTextureRegionDrawable("RED"));
         stage.addActor(mainTable);
 
     }
