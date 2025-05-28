@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.project.clicker.ui.TableFactory;
+import com.project.clicker.ui.TextureFactory;
 
 public class MainScene implements Screen {
     private Stage stage;
@@ -43,6 +44,7 @@ public class MainScene implements Screen {
 
 
         TableFactory tableFactory = new TableFactory(skin);
+        TextureFactory textureFactory = new TextureFactory();
 
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -53,6 +55,8 @@ public class MainScene implements Screen {
         Table clickerTable = new Table();
         clickerTable.add(clickLabel).row();
         clickerTable.add(clickButton);
+
+        clickerTable.setBackground(textureFactory.createPlainTextureRegionDrawable("BLUE"));
 
         mainTable.add(menuTable).expand().left().padTop(50);
         mainTable.add(clickerTable).expand().right().center();
