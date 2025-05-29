@@ -62,19 +62,12 @@ public class Hud {
 
 
         //UI DO ULEPSZEN
-        // Nowy przycisk do ulepszeń
         Table upgradeTable = new Table();
 
         for (Upgrade upgrade : state.getUpgrades()) {
             Table buttonTable = new Table();
             String text = upgrade.getUpgradeInfo();
             ImageTextButton upgradeButton = new ImageTextButton(".", skin, "upgrade-button");
-            upgradeButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    upgrade.apply();
-                }
-            });
             Label description = new Label(upgrade.getUpgradeInfo(), skin, "upgrade-description"); // Przykładowy opis
 
             upgradeButton.setDisabled(false);
@@ -100,20 +93,16 @@ public class Hud {
         scrollPane.setScrollingDisabled(false, false); // pozwala przewijać pionowo i poziomo (możesz ustawić na true jeśli chcesz tylko pion)
 
         Table container = new Table();
-        //container.setFillParent(true);
         container.top().padTop(50);
         container.add(scrollPane).grow(); // scrollPane zajmie całą dostępną przestrzeń
 
         container.setSize(100, 100);
 
+
+
         //SKLADANIE CALOSCI
         moneyLabel = new Label("Money: 0", skin);
-
-
-
         passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
-
-
         clickingTable.add(moneyLabel).row();
         clickingTable.add(passiveIncomeLabel).row();
         mainTable.add(container).expand().left().padTop(50).padLeft(50).size(640, 1000);

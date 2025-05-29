@@ -65,7 +65,7 @@ public class Upgrade {
         active = true;
         timesActivated++;
         state.addMoney(-cost);
-        cost += cost * 0.2;
+        cost += (long) (cost * 0.2);
 
         for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
             switch (entry.getKey()) {
