@@ -14,22 +14,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.Upgrade.Upgrade;
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class Hud {
-    private Stage stage;
+    private final Stage stage;
     private Label moneyLabel;
     private Label clickLabel;
     private Label passiveIncomeLabel;
-    private GameState state;
-    private IncomeManager incomeManager;
-    private UpgradeFactory upgradeFactory;
+    private final GameState state;
+    private final IncomeManager incomeManager;
+    private final UpgradeFactory upgradeFactory;
 
-    private List<Label> upgradeLabels = new ArrayList<>();
-    private List<ImageTextButton> upgradeButtons = new ArrayList<>();
+    private final List<Label> upgradeLabels = new ArrayList<>();
+    private final List<ImageTextButton> upgradeButtons = new ArrayList<>();
 
     public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
         this.stage = new Stage(viewport);
@@ -40,8 +39,18 @@ public class Hud {
         Table mainTable = new Table();
         mainTable.setSize(1920, 1080);
 
-        //UI DO KLIKANIA
+        Table clickingTable = createClickingUI(skin);
+        Table upgradeContainer = createUpgradesUI(skin);
 
+        mainTable.add(upgradeContainer).expand().left().padTop(50).padLeft(50).size(640, 1000);
+        mainTable.add(clickingTable).expand().expand();
+
+        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
+        stage.addActor(mainTable);
+    }
+
+
+    private Table createClickingUI(Skin skin) {
         Table clickingTable = new Table();
         clickLabel = new Label("Kliknięcia: 0", skin);
 
@@ -53,22 +62,26 @@ public class Hud {
                 incomeManager.addMoneyFromClick();
                 clickLabel.setText("Kliknięcia: " + state.getClicks());
             }
-
-
         });
 
         clickingTable.add(clickLabel).row();
         clickingTable.add(imageButton).size(300, 300).row();
 
+        moneyLabel = new Label("Money: 0", skin);
+        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
+        clickingTable.add(moneyLabel).row();
+        clickingTable.add(passiveIncomeLabel).row();
 
-        //UI DO ULEPSZEN
+        return clickingTable;
+    }
+
+    private Table createUpgradesUI(Skin skin) {
         Table upgradeTable = new Table();
 
         for (Upgrade upgrade : state.getUpgrades()) {
             Table buttonTable = new Table();
-            String text = upgrade.getUpgradeInfo();
             ImageTextButton upgradeButton = new ImageTextButton(".", skin, "upgrade-button");
-            Label description = new Label(upgrade.getUpgradeInfo(), skin, "upgrade-description"); // Przykładowy opis
+            Label description = new Label(upgrade.getUpgradeInfo(), skin, "upgrade-description");
 
             upgradeButton.setDisabled(false);
             upgradeButton.setTouchable(Touchable.enabled);
@@ -80,36 +93,24 @@ public class Hud {
                 }
             });
 
-            upgradeLabels.add(description);        // dodaj do listy
-            upgradeButtons.add(upgradeButton);    // dodaj do listy
+            upgradeLabels.add(description);
+            upgradeButtons.add(upgradeButton);
             buttonTable.add(upgradeButton).expand().left();
             buttonTable.add(description).expand().right();
             buttonTable.setBackground(skin.getDrawable("button"));
-            upgradeTable.add(buttonTable).size(600,150).padBottom(50).row(); // dodaj do UI
+            upgradeTable.add(buttonTable).size(600,150).padBottom(50).row();
         }
 
         ScrollPane scrollPane = new ScrollPane(upgradeTable, skin);
         scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(false, false); // pozwala przewijać pionowo i poziomo (możesz ustawić na true jeśli chcesz tylko pion)
+        scrollPane.setScrollingDisabled(false, false);
 
         Table container = new Table();
         container.top().padTop(50);
-        container.add(scrollPane).grow(); // scrollPane zajmie całą dostępną przestrzeń
-
+        container.add(scrollPane).grow();
         container.setSize(100, 100);
 
-
-
-        //SKLADANIE CALOSCI
-        moneyLabel = new Label("Money: 0", skin);
-        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
-        clickingTable.add(moneyLabel).row();
-        clickingTable.add(passiveIncomeLabel).row();
-        mainTable.add(container).expand().left().padTop(50).padLeft(50).size(640, 1000);
-        mainTable.add(clickingTable).expand().expand();
-
-        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
-        stage.addActor(mainTable);
+        return container;
     }
 
     public Stage getStage() {

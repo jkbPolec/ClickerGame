@@ -1,7 +1,10 @@
 package com.project.clicker.logic;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+
 public class IncomeManager {
-    private GameState state;
+    private final GameState state;
     private double passiveIncomeMultiplier;
     private double moneyPerClickMultiplier;
     private float timer = 0f;
@@ -19,6 +22,11 @@ public class IncomeManager {
             int ticks = (int)(timer);
             state.addMoney(ticks * calculatePassiveIncome());
             timer -= ticks;
+        }
+
+        // Debugging: Press SPACE to add 100000 money
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            state.addMoney(100000);
         }
     }
 
@@ -38,7 +46,7 @@ public class IncomeManager {
 
     public long calculateMoneyPerClick() {
         long value = 1;
-        value *= moneyPerClickMultiplier;
+        value *= (long) moneyPerClickMultiplier;
         return value;
     }
 
@@ -48,7 +56,7 @@ public class IncomeManager {
 
     public long calculatePassiveIncome() {
         long value = 10;
-        value *= passiveIncomeMultiplier;
+        value *= (long) passiveIncomeMultiplier;
         return value;
     }
 }

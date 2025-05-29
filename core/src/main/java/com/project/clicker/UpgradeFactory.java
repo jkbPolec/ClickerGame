@@ -11,9 +11,9 @@ import java.util.Map;
 
 
 public class UpgradeFactory {
-    private GameState state;
-    private IncomeManager incomeManager;
-    private PopulationManager populationManager;
+    private final GameState state;
+    private final IncomeManager incomeManager;
+    private final PopulationManager populationManager;
 
     public UpgradeFactory(GameState gameState, IncomeManager incomeManager, PopulationManager populationManager) {
         this.state = gameState;
