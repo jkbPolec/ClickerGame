@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class TableFactory {
 
-    private Skin skin;
+    private final Skin skin;
 
-    public TableFactory(Skin skin) {
-        this.skin = skin;
+    public TableFactory() {
+        this.skin = SkinManager.getInstance().skin;
     }
 
     public Table createSimpleMenu(String titleText, String... buttonLabels) {
@@ -61,13 +61,24 @@ public class TableFactory {
 
         for (String label : buttonLabels) {
             Table buttonTable = new Table();
-            TextButton button = new TextButton(label, skin);
+
+
+            ImageTextButton button = new ImageTextButton("ulepszenie", skin, "upgrade-button");
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // Tutaj możesz dodać logikę dla przycisku ulepszenia
+                    System.out.println("Ulepszenie: " + label);
+                }
+            });
+
             Label description = new Label("Level: " + label, skin, "upgrade-description"); // Przykładowy opis
             description.setFontScale(0.7f);
+
             buttonTable.add(button).expand().left();
             buttonTable.add(description).expand().right();
             buttonTable.setBackground(skin.getDrawable("button"));
-            table.add(buttonTable).size(400,75).pad(10).row();
+            table.add(buttonTable).size(600,75).padBottom(50).row();
         }
 
 

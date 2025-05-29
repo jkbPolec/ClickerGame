@@ -742,3 +742,12 @@ window-resizable
   orig: 27, 43
   offset: 0, 0
   index: -1
+uiskin.png
+size:1024,1024
+repeat:none
+dollar-bill
+bounds:2,260,512,512
+green-button-M
+bounds:516,632,256,140
+uiskin
+bounds:2,2,512,256

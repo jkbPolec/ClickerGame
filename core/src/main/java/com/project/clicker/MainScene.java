@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -14,20 +12,17 @@ import com.project.clicker.ui.TextureFactory;
 
 public class MainScene implements Screen {
     private Stage stage;
-    private Skin skin;
 
 
     @Override
     public void show() {
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 
-
-
-        TableFactory tableFactory = new TableFactory(skin);
+        TableFactory tableFactory = new TableFactory();
 
         Table mainTable = new Table();
 
@@ -42,7 +37,7 @@ public class MainScene implements Screen {
 
         clickerTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("BLUE"));
 
-        mainTable.add(menuTable).expand().left().padTop(50).padLeft(50).size(440, 1000);
+        mainTable.add(menuTable).expand().left().padTop(50).padLeft(50).size(640, 1000);
         mainTable.add(clickerTable).expand().size(100,100);
 
         mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
@@ -82,6 +77,5 @@ public class MainScene implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
     }
 }
