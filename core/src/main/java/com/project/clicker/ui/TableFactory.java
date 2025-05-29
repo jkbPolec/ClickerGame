@@ -69,6 +69,7 @@ public class TableFactory {
                 public void clicked(InputEvent event, float x, float y) {
                     // Tutaj możesz dodać logikę dla przycisku ulepszenia
                     System.out.println("Ulepszenie: " + label);
+                    button.setText("Ulepsz\n KOSZT");
                 }
             });
 
@@ -78,7 +79,7 @@ public class TableFactory {
             buttonTable.add(button).expand().left();
             buttonTable.add(description).expand().right();
             buttonTable.setBackground(skin.getDrawable("button"));
-            table.add(buttonTable).size(600,75).padBottom(50).row();
+            table.add(buttonTable).size(600,150).padBottom(50).row();
         }
 
 
