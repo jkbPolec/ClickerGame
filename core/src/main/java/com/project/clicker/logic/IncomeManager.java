@@ -2,40 +2,53 @@ package com.project.clicker.logic;
 
 public class IncomeManager {
     private GameState state;
-    private long passiveIncome;
-    private long moneyPerClick;
+    private double passiveIncomeMultiplier;
+    private double moneyPerClickMultiplier;
     private float timer = 0f;
 
     public IncomeManager(GameState state) {
         this.state = state;
-        passiveIncome = 1;
-        moneyPerClick = 1;
+        passiveIncomeMultiplier = 1;
+        moneyPerClickMultiplier = 1;
     }
 
     public void update(float delta) {
         timer += delta;
         if (timer >= 1f) {
-            System.out.println(passiveIncome);
+            System.out.println(calculatePassiveIncome());
             int ticks = (int)(timer);
-            state.addMoney(ticks * passiveIncome);
+            state.addMoney(ticks * calculatePassiveIncome());
             timer -= ticks;
         }
     }
 
+
     public void addMoneyFromClick() {
-        state.addMoney(moneyPerClick);
+        state.addMoney(calculateMoneyPerClick());
     }
 
 
-    public void changePassiveIncome(double value) {
-        passiveIncome *= value;
+    public void increasePassiveIncome(double value) {
+        passiveIncomeMultiplier += value;
     }
 
     public void increaseMoneyPerClick(double value) {
-        moneyPerClick *= value;
+        moneyPerClickMultiplier +=  value;
+    }
+
+    public long calculateMoneyPerClick() {
+        long value = 1;
+        value *= moneyPerClickMultiplier;
+        return value;
     }
 
     public long getPassiveIncome() {
-        return passiveIncome;
+        return calculatePassiveIncome();
+    }
+
+    public long calculatePassiveIncome() {
+        long value = 10;
+        value *= passiveIncomeMultiplier;
+        return value;
     }
 }

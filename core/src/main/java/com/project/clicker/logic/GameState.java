@@ -11,8 +11,6 @@ public class GameState {
     private long population;
     private List<Upgrade> upgrades;
 
-
-
     public GameState() {
         this.money = 0;
         this.clicks = 0;
@@ -51,6 +49,4 @@ public class GameState {
     public List<Upgrade> getUpgrades() {
         return upgrades;
     }
-
-
 }
