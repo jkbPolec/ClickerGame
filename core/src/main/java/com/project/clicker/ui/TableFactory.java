@@ -35,7 +35,7 @@ public class TableFactory {
 
         Label clickLabel = new Label("Kliknięcia: 0", skin);
 
-        ImageButton imageButton = new ImageButton(TextureFactory.createTextureRegionDrawable("dollar-bill.png"));
+        ImageButton imageButton = new ImageButton(skin, "dollar-button");
         imageButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
