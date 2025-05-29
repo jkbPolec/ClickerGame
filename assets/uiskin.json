@@ -1,6 +1,6 @@
 {
   com.badlogic.gdx.graphics.g2d.BitmapFont: {
-  default-font: {file: default.fnt },
+  default-font: {file: biggerButtonFont.fnt },
   small-font: {file: font-small.fnt },
   text-button-font: {file: biggerButtonFont.fnt },
 },

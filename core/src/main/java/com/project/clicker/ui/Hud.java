@@ -28,7 +28,8 @@ public class Hud {
     private IncomeManager incomeManager;
     private UpgradeFactory upgradeFactory;
 
-    private List<TextButton> upgradeButtons = new ArrayList<>();
+    private List<Label> upgradeLabels = new ArrayList<>();
+    private List<ImageTextButton> upgradeButtons = new ArrayList<>();
 
     public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
         this.stage = new Stage(viewport);
@@ -36,26 +37,46 @@ public class Hud {
         this.incomeManager = incomeManager;
         this.upgradeFactory = upgradeFactory;
 
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+        Table mainTable = new Table();
+        mainTable.setSize(1920, 1080);
 
+        //UI DO KLIKANIA
+
+        Table clickingTable = new Table();
         clickLabel = new Label("Kliknięcia: 0", skin);
 
-        TextButton clickButton = new TextButton("Klik!", skin);
-        clickButton.addListener(new ClickListener() {
+        ImageButton imageButton = new ImageButton(skin, "dollar-button");
+        imageButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 state.addClicks(1);
                 incomeManager.addMoneyFromClick();
                 clickLabel.setText("Kliknięcia: " + state.getClicks());
             }
+
+
         });
 
+        clickingTable.add(clickLabel).row();
+        clickingTable.add(imageButton).size(300, 300).row();
+
+
+        //UI DO ULEPSZEN
         // Nowy przycisk do ulepszeń
+        Table upgradeTable = new Table();
+
         for (Upgrade upgrade : state.getUpgrades()) {
+            Table buttonTable = new Table();
             String text = upgrade.getUpgradeInfo();
-            TextButton upgradeButton = new TextButton(text, skin);
+            ImageTextButton upgradeButton = new ImageTextButton(".", skin, "upgrade-button");
+            upgradeButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    upgrade.apply();
+                }
+            });
+            Label description = new Label(upgrade.getUpgradeInfo(), skin, "upgrade-description"); // Przykładowy opis
+
             upgradeButton.setDisabled(false);
             upgradeButton.setTouchable(Touchable.enabled);
 
@@ -66,20 +87,40 @@ public class Hud {
                 }
             });
 
-            upgradeButtons.add(upgradeButton);        // dodaj do listy
-            table.add(upgradeButton).padTop(5).row(); // dodaj do UI
+            upgradeLabels.add(description);        // dodaj do listy
+            upgradeButtons.add(upgradeButton);    // dodaj do listy
+            buttonTable.add(upgradeButton).expand().left();
+            buttonTable.add(description).expand().right();
+            buttonTable.setBackground(skin.getDrawable("button"));
+            upgradeTable.add(buttonTable).size(600,150).padBottom(50).row(); // dodaj do UI
         }
 
+        ScrollPane scrollPane = new ScrollPane(upgradeTable, skin);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollingDisabled(false, false); // pozwala przewijać pionowo i poziomo (możesz ustawić na true jeśli chcesz tylko pion)
+
+        Table container = new Table();
+        //container.setFillParent(true);
+        container.top().padTop(50);
+        container.add(scrollPane).grow(); // scrollPane zajmie całą dostępną przestrzeń
+
+        container.setSize(100, 100);
+
+        //SKLADANIE CALOSCI
         moneyLabel = new Label("Money: 0", skin);
 
 
-        moneyLabel = new Label("Money: 0", skin);
+
         passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
-        table.bottom().left();
-        table.add(clickLabel).padBottom(20).row();
-        table.add(clickButton).row();
-        table.add(moneyLabel).padLeft(60f).padBottom(10f).row();
-        table.add(passiveIncomeLabel).padLeft(60f).padBottom(40f).row();
+
+
+        clickingTable.add(moneyLabel).row();
+        clickingTable.add(passiveIncomeLabel).row();
+        mainTable.add(container).expand().left().padTop(50).padLeft(50).size(640, 1000);
+        mainTable.add(clickingTable).expand().expand();
+
+        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
+        stage.addActor(mainTable);
     }
 
     public Stage getStage() {
@@ -91,8 +132,9 @@ public class Hud {
         passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome());
         for (int i = 0; i < state.getUpgrades().size(); i++) {
             Upgrade upgrade = state.getUpgrades().get(i);
-            TextButton button = upgradeButtons.get(i);
-            button.setText(upgrade.getUpgradeInfo());
+            upgradeLabels.get(i).setText(upgrade.getUpgradeInfo());
+            ImageTextButton button = upgradeButtons.get(i);
+            button.setText("Przycisk");
 
             if (upgrade.getCost() <= state.getMoney()) {
                 button.setDisabled(false);
