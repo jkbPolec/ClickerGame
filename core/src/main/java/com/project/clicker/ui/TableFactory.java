@@ -1,9 +1,7 @@
 package com.project.clicker.ui;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class TableFactory {
 
@@ -30,7 +28,33 @@ public class TableFactory {
     }
 
 
-    public Table createScrollableMenu(String titleText, String... buttonLabels) {
+    int clicks = 0;
+    public Table createClickingMenu() {
+
+        Table table = new Table();
+
+        Label clickLabel = new Label("Kliknięcia: 0", skin);
+
+        ImageButton imageButton = new ImageButton(TextureFactory.createTextureRegionDrawable("dollar-bill.png"));
+        imageButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                clicks ++;
+                clickLabel.setText("Kliknięcia: " + clicks);
+            }
+
+
+        });
+
+
+        table.add(clickLabel).row();
+        table.add(imageButton).size(300, 300);
+
+        return table;
+    }
+
+
+    public Table getScrollableMenu(String titleText, String... buttonLabels) {
         Table table = new Table();
         Label title = new Label(titleText, skin);
         table.add(title).padBottom(30).row();
@@ -41,10 +65,9 @@ public class TableFactory {
             Label description = new Label("Level: " + label, skin, "upgrade-description"); // Przykładowy opis
             description.setFontScale(0.7f);
             buttonTable.add(button).expand().left();
-            buttonTable.add(description).expand().right(); // Dodaj opis pod przyciskiem
+            buttonTable.add(description).expand().right();
             buttonTable.setBackground(skin.getDrawable("button"));
             table.add(buttonTable).size(400,75).pad(10).row();
-            //table.add(button).pad(10).row();
         }
 
 

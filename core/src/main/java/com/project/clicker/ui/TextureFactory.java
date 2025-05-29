@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class TextureFactory {
 
-    public TextureRegionDrawable createPlainTextureRegionDrawable(String color) {
+    public static TextureRegionDrawable createPlainTextureRegionDrawable(String color) {
         Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
         switch (color) {
             case "RED":
@@ -29,6 +29,11 @@ public class TextureFactory {
         bgPixmap.fill();
         return new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
 
+    }
+
+    public static TextureRegionDrawable createTextureRegionDrawable(String texturePath) {
+        Texture texture = new Texture(texturePath);
+        return new TextureRegionDrawable(new TextureRegion(texture));
     }
 
 }
