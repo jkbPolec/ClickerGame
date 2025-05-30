@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.IncomeManager;
+import com.project.clicker.sound.SoundManager;
 
 public class ClickingUI {
     private final Table table;
@@ -24,6 +25,7 @@ public class ClickingUI {
                 state.addClicks(1);
                 incomeManager.addMoneyFromClick();
                 clickLabel.setText("Kliknięcia: " + state.getClicks());
+                SoundManager.getInstance().playRandomClick();
 
                 // Animacja
                 imageButton.clearActions();
