@@ -9,6 +9,9 @@ public class ItemFactory {
             case "IncreaseClickMoney":
                 effect = new IncreaseClickMoneyEffect(data.effectValue);
                 break;
+            case "brak":
+                effect = new IncreaseClickMoneyEffect(data.effectValue);
+                break;
             // Dodaj kolejne typy efektów tutaj
             default:
                 throw new IllegalArgumentException("Nieznany typ efektu: " + data.effectType);

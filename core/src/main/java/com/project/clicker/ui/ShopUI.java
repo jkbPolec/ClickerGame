@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.project.clicker.logic.items.Item;
 import com.project.clicker.ui.TextureFactory;
+
 
 import java.util.List;
 
 public class ShopUI extends Table {
-    public ShopUI(Skin skin, List<String> items) {
+    public ShopUI(Skin skin, List<Item> items) {
         this.setBackground(TextureFactory.createPlainTextureRegionDrawable("BLUE"));
         this.setVisible(false);
 
@@ -30,8 +32,8 @@ public class ShopUI extends Table {
         this.add(title).padBottom(20).colspan(4).row();
 
         int col = 0;
-        for (String item : items) {
-            Texture texture = new Texture(Gdx.files.internal("items/"+ item + ".png"));
+        for (Item item : items) {
+            Texture texture = new Texture(Gdx.files.internal("items/"+ item.getImage()));
             Image image = new Image(new TextureRegion(texture));
             image.setScaling(Scaling.stretch);
             image.setSize(150, 150);

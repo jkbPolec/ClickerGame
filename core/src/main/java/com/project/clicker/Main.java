@@ -11,10 +11,7 @@ public class Main extends Game {
     public void create() {
 
         LoadSounds();
-        ItemLoader itemLoader = new ItemLoader("items.json");
-        for (Item item : itemLoader.getItems()){
-            System.out.println(item.getAllData());
-        }
+
 
 
         setScreen(new MainScene(this));

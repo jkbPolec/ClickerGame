@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.Upgrade.Upgrade;
+import com.project.clicker.logic.items.IItemEffect;
+import com.project.clicker.logic.items.ItemLoader;
 import com.project.clicker.sound.SoundManager;
 
 import java.util.List;
@@ -29,20 +31,19 @@ public class Hud {
     private final IncomeManager incomeManager;
     private final UpgradeFactory upgradeFactory;
     BigNumber money;
-
     private final ClickingUI clickingUI;
     private final UpgradesUI upgradesUI;
     private ShopUI shopUI;
 
-    public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
+    public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory, ItemLoader itemLoader) {
         this.stage = new Stage(viewport);
         this.state = state;
         this.incomeManager = incomeManager;
         this.upgradeFactory = upgradeFactory;
 
 
-        List<String> items = java.util.Arrays.asList("Hammer", "Shovel", "RedPotion", "Diamond", "SilverIngot"); // przykładowe przedmioty
-        shopUI = new ShopUI(skin, items);
+        //List<String> items = java.util.Arrays.asList("Hammer", "Shovel", "RedPotion", "Diamond", "SilverIngot"); // przykładowe przedmioty
+        shopUI = new ShopUI(skin, itemLoader.getItems());
         shopUI.setFillParent(true);
         shopUI.center();
         shopUI.setVisible(false);
@@ -77,6 +78,8 @@ public class Hud {
                 }
             }
         );
+
+
         header.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREEN"));
 
 

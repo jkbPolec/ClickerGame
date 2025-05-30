@@ -2,9 +2,11 @@ package com.project.clicker;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.project.clicker.logic.*;
+import com.project.clicker.logic.items.ItemLoader;
 import com.project.clicker.ui.Hud;
 
 public class MainScene implements Screen {
@@ -14,6 +16,7 @@ public class MainScene implements Screen {
     private PopulationManager populationManager;
     private Hud hud;
     private UpgradeFactory upgradeFactory;
+    private ItemLoader itemLoader;
 
     public MainScene(Main game) {
         this.game = game;
@@ -22,12 +25,13 @@ public class MainScene implements Screen {
         this.populationManager = new PopulationManager(state);
         this.upgradeFactory = new UpgradeFactory(state, incomeManager, populationManager);
         this.upgradeFactory.initializeUpgrades();
+        this.itemLoader = new ItemLoader("items.json");
     }
 
     @Override
     public void show() {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        hud = new Hud(new ScreenViewport(), skin, state, incomeManager, upgradeFactory);
+        hud = new Hud(new ScreenViewport(), skin, state, incomeManager, upgradeFactory, itemLoader);
         Gdx.input.setInputProcessor(hud.getStage());
     }
 

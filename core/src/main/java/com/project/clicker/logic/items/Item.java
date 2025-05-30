@@ -45,6 +45,10 @@ public abstract class Item {
         return isBought;
     }
 
+    public String getImage() {
+        return image;
+    }
+
     public boolean buy(GameState state) {
         if (isBought) {
             return false; // Item already bought

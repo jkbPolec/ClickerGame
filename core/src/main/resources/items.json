@@ -7,5 +7,41 @@
     "effectType": "IncreaseClickMoney",
     "effectValue": 2.0,
     "image": "Hammer.png"
+  },
+  {
+    "id": 2,
+    "name": "Diamond",
+    "description": "Jescze nic",
+    "cost": 10000,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 1.0,
+    "image": "Diamond.png"
+  },
+  {
+    "id": 3,
+    "name": "Red Potion",
+    "description": "Tez nic",
+    "cost": 20000,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 1.0,
+    "image": "RedPotion.png"
+  },
+  {
+    "id": 4,
+    "name": "Shovel",
+    "description": "Wciaz nic",
+    "cost": 50000,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 1.0,
+    "image": "Shovel.png"
+  },
+  {
+    "id": 5,
+    "name": "Silver Ingot",
+    "description": "Nadal nic",
+    "cost": 100000,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 1.0,
+    "image": "SilverIngot.png"
   }
 ]
