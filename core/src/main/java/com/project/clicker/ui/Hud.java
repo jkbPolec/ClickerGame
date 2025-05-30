@@ -14,13 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.Upgrade.Upgrade;
-import com.project.clicker.logic.items.IItemEffect;
 import com.project.clicker.logic.items.ItemLoader;
 import com.project.clicker.sound.SoundManager;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class Hud {
     private final Stage stage;
@@ -42,7 +37,7 @@ public class Hud {
         this.upgradeFactory = upgradeFactory;
 
 
-        //List<String> items = java.util.Arrays.asList("Hammer", "Shovel", "RedPotion", "Diamond", "SilverIngot"); // przykładowe przedmioty
+
         shopUI = new ShopUI(skin, itemLoader.getItems());
         shopUI.setFillParent(true);
         shopUI.center();

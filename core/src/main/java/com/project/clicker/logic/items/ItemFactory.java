@@ -1,6 +1,7 @@
 package com.project.clicker.logic.items;
 
 import com.project.clicker.logic.BigNumber;
+import com.project.clicker.logic.items.effects.IncreaseClickMoneyEffect;
 
 public class ItemFactory {
     public static Item createItem(ItemData data) {

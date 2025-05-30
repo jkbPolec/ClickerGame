@@ -1,6 +1,7 @@
-package com.project.clicker.logic.items;
+package com.project.clicker.logic.items.effects;
 
 import com.project.clicker.logic.GameState;
+import com.project.clicker.logic.items.IItemEffect;
 
 public class IncreaseClickMoneyEffect implements IItemEffect {
     private final double multiplier;

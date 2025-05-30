@@ -23,7 +23,7 @@ public class TextureFactory {
                 bgPixmap.setColor(1, 1, 0, 1); // Yellow
                 break;
             case "GREY":
-                bgPixmap.setColor(0.5f, 0.5f, 0.5f, 1);
+                bgPixmap.setColor(0.5f, 0.5f, 0.5f, 0.5f);
                 break;
 
 
