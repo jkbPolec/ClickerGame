@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Hammer",
     "description": "Zwiększa wartość kliknięcia.",
     "cost": 1000,

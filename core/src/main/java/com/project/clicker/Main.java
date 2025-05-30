@@ -1,6 +1,8 @@
 package com.project.clicker;
 
 import com.badlogic.gdx.Game;
+import com.project.clicker.logic.items.Item;
+import com.project.clicker.logic.items.ItemLoader;
 import com.project.clicker.sound.SoundManager;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -9,6 +11,10 @@ public class Main extends Game {
     public void create() {
 
         LoadSounds();
+        ItemLoader itemLoader = new ItemLoader("items.json");
+        for (Item item : itemLoader.getItems()){
+            System.out.println(item.getAllData());
+        }
 
 
         setScreen(new MainScene(this));

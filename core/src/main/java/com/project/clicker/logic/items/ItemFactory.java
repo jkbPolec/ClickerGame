@@ -14,6 +14,7 @@ public class ItemFactory {
                 throw new IllegalArgumentException("Nieznany typ efektu: " + data.effectType);
         }
         return new ConcreteItem(
+            data.id,
             data.name,
             data.description,
             new BigNumber(data.cost),
