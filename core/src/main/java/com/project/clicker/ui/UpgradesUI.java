@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.Upgrade.Upgrade;
 
@@ -14,6 +15,7 @@ public class UpgradesUI {
     private final Table container;
     private final List<Label> upgradeLabels = new ArrayList<>();
     private final List<ImageTextButton> upgradeButtons = new ArrayList<>();
+    BigNumber money;
 
     public UpgradesUI(Skin skin, GameState state) {
         Table upgradeTable = new Table();
@@ -56,13 +58,14 @@ public class UpgradesUI {
     }
 
     public void update(GameState state) {
+        this.money = state.getMoney();
         for (int i = 0; i < state.getUpgrades().size(); i++) {
             Upgrade upgrade = state.getUpgrades().get(i);
             upgradeLabels.get(i).setText(upgrade.getUpgradeInfo());
             ImageTextButton button = upgradeButtons.get(i);
             button.setText("Przycisk");
 
-            if (upgrade.getCost() <= state.getMoney()) {
+            if (money.isGreaterOrEqual(upgrade.getCost())) {
                 button.setDisabled(false);
                 button.setTouchable(Touchable.enabled);
             } else {

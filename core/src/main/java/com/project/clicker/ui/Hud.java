@@ -54,11 +54,6 @@ public class Hud {
         Table mainTable = new Table();
         mainTable.setSize(1920, 1080);
 
-        Table clickingTable = createClickingUI(skin);
-        Table upgradeContainer = createUpgradesUI(skin);
-
-        mainTable.add(upgradeContainer).expand().left().padTop(50).padLeft(50).size(640, 1000);
-        mainTable.add(clickingTable).expand().expand();
 
         HeaderUI header = new HeaderUI(
             skin,

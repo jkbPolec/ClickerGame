@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.sound.SoundManager;
@@ -13,10 +14,12 @@ public class ClickingUI {
     private final Label clickLabel;
     private final Label moneyLabel;
     private final Label passiveIncomeLabel;
+    BigNumber money;
 
     public ClickingUI(Skin skin, GameState state, IncomeManager incomeManager) {
         table = new Table();
         clickLabel = new Label("Kliknięcia: 0", skin);
+
 
         ImageButton imageButton = new ImageButton(skin, "dollar-button");
         imageButton.addListener(new ClickListener() {
@@ -48,8 +51,8 @@ public class ClickingUI {
         table.add(imageButton).size(300, 300).row();
         imageButton.setOrigin(150, 150);
 
-        moneyLabel = new Label("Money: 0", skin);
-        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
+        moneyLabel = new Label("Money: 0$", skin);
+        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$", skin);
         table.add(moneyLabel).row();
         table.add(passiveIncomeLabel).row();
     }
@@ -59,7 +62,8 @@ public class ClickingUI {
     }
 
     public void update(GameState state, IncomeManager incomeManager) {
-        moneyLabel.setText("Money: " + state.getMoney());
-        passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome());
+        money = state.getMoney();
+        moneyLabel.setText("Money: " + money.toReadableString() + "$");
+        passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$");
     }
 }
