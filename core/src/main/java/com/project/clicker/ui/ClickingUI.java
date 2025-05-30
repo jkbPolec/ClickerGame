@@ -1,6 +1,7 @@
 package com.project.clicker.ui;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.project.clicker.logic.GameState;
@@ -23,11 +24,27 @@ public class ClickingUI {
                 state.addClicks(1);
                 incomeManager.addMoneyFromClick();
                 clickLabel.setText("Kliknięcia: " + state.getClicks());
+
+                // Animacja
+                imageButton.clearActions();
+                imageButton.addAction(
+                    Actions.sequence(
+                        Actions.scaleTo(0.85f, 0.85f, 0.08f), // zmniejsz
+                        Actions.scaleTo(1.1f, 1.1f, 0.08f),   // powiększ lekko
+                        Actions.scaleTo(1f, 1f, 0.08f)        // wróć do normalnego rozmiaru
+                    )
+                );
             }
         });
 
+        // Do animacji
+        imageButton.setOrigin(imageButton.getWidth() / 2f, imageButton.getHeight() / 2f);
+        imageButton.setTransform(true);
+        imageButton.setScale(1f);
+
         table.add(clickLabel).row();
         table.add(imageButton).size(300, 300).row();
+        imageButton.setOrigin(150, 150);
 
         moneyLabel = new Label("Money: 0", skin);
         passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
