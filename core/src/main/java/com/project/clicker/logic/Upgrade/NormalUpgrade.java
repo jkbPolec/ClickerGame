@@ -1,5 +1,6 @@
 package com.project.clicker.logic.Upgrade;
 
+import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.PopulationManager;
@@ -9,9 +10,16 @@ import java.util.Map;
 public class NormalUpgrade extends Upgrade {
     Map<NormalUpgradeType, Double> effects;
 
-    public NormalUpgrade(String name, Map<NormalUpgradeType, Double> effects, long cost, double costIncrease,
+    public NormalUpgrade(String name, Map<NormalUpgradeType, Double> effects, BigNumber cost, double costIncrease,
                          GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
         super(name, cost, costIncrease, state, incomeManager, populationManager);
+        this.effects = effects;
+    }
+
+    // Konstruktor dla kompatybilności z long (konwertuje na BigNumber)
+    public NormalUpgrade(String name, Map<NormalUpgradeType, Double> effects, long cost, double costIncrease,
+                         GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
+        super(name, new BigNumber(cost), costIncrease, state, incomeManager, populationManager);
         this.effects = effects;
     }
 
@@ -19,7 +27,7 @@ public class NormalUpgrade extends Upgrade {
     public String getUpgradeInfo() {
         StringBuilder info = new StringBuilder();
         info.append("Nazwa: ").append(name).append("\n");
-        info.append("Koszt: ").append(cost).append("\n");
+        info.append("Koszt: ").append(cost).append("$\n");
         info.append("Efekty:\n");
 
         for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
@@ -39,11 +47,11 @@ public class NormalUpgrade extends Upgrade {
 
     @Override
     public void apply() {
-        if (cost <= state.getMoney()) {
+        if (canAfford()) {
             active = true;
             timesActivated++;
-            state.addMoney(-cost);
-            cost += (long) (costIncrease * cost);
+            state.subtractMoney(cost);
+            increaseCost();
 
             for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
                 switch (entry.getKey()) {

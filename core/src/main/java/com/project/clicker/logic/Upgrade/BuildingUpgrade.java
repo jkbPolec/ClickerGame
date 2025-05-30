@@ -3,13 +3,23 @@ package com.project.clicker.logic.Upgrade;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.PopulationManager;
-
+import com.project.clicker.logic.BigNumber;
 
 public class BuildingUpgrade extends Upgrade {
     BuildingUpgradeType type;
 
-    public BuildingUpgrade(String name, long cost, double costIncrease, GameState state, IncomeManager incomeManager, PopulationManager populationManager, BuildingUpgradeType type) {
+    public BuildingUpgrade(String name, BigNumber cost, double costIncrease,
+                           GameState state, IncomeManager incomeManager,
+                           PopulationManager populationManager, BuildingUpgradeType type) {
         super(name, cost, costIncrease, state, incomeManager, populationManager);
+        this.type = type;
+    }
+
+    // Konstruktor dla kompatybilności
+    public BuildingUpgrade(String name, long cost, double costIncrease,
+                           GameState state, IncomeManager incomeManager,
+                           PopulationManager populationManager, BuildingUpgradeType type) {
+        super(name, new BigNumber(cost), costIncrease, state, incomeManager, populationManager);
         this.type = type;
     }
 
@@ -17,31 +27,30 @@ public class BuildingUpgrade extends Upgrade {
     public String getUpgradeInfo() {
         StringBuilder info = new StringBuilder();
         info.append("Nazwa: ").append(name).append("\n");
-        info.append("Koszt: ").append(cost).append("\n");
+        info.append("Koszt: ").append(cost.toReadableString()).append("$\n");
         info.append("Liczba użyć: ").append(timesActivated).append("\n");
         return info.toString();
     }
 
     @Override
     public void apply() {
-        if (cost <= state.getMoney()) {
+        if (canAfford()) {
             active = true;
             timesActivated++;
-            state.addMoney(-cost);
-            cost += (long) (costIncrease * cost);
-
+            state.subtractMoney(cost);
+            increaseCost();
 
             switch (type) {
                 case FACTORY:
                     state.addFactory(1);
-                    incomeManager.increaseFactoryIncome(1);
+                    incomeManager.increaseFactoryIncome(new BigNumber(2));
                     break;
                 case SHOP:
                     state.addShop(1);
                     break;
                 case APARTMENT:
                     state.addApartment(1);
-                    populationManager.increasePopulation(500);
+                    state.addPopulation(new BigNumber(1000));
                     break;
             }
         }

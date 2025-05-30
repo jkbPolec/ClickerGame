@@ -3,6 +3,7 @@ package com.project.clicker.ui;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.project.clicker.UpgradeFactory;
+import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,6 +26,7 @@ public class Hud {
     private final GameState state;
     private final IncomeManager incomeManager;
     private final UpgradeFactory upgradeFactory;
+    BigNumber money;
 
     private final List<Label> upgradeLabels = new ArrayList<>();
     private final List<ImageTextButton> upgradeButtons = new ArrayList<>();
@@ -34,6 +36,7 @@ public class Hud {
         this.state = state;
         this.incomeManager = incomeManager;
         this.upgradeFactory = upgradeFactory;
+
 
         Table mainTable = new Table();
         mainTable.setSize(1920, 1080);
@@ -66,8 +69,8 @@ public class Hud {
         clickingTable.add(clickLabel).row();
         clickingTable.add(imageButton).size(300, 300).row();
 
-        moneyLabel = new Label("Money: 0", skin);
-        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome(), skin);
+        moneyLabel = new Label("Money: 0$", skin);
+        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$", skin);
         clickingTable.add(moneyLabel).row();
         clickingTable.add(passiveIncomeLabel).row();
 
@@ -116,15 +119,16 @@ public class Hud {
     }
 
     public void update() {
-        moneyLabel.setText("Money: " + state.getMoney());
-        passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome());
+        this.money = state.getMoney();
+        moneyLabel.setText("Money: " + money.toReadableString() + "$");
+        passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$");
         for (int i = 0; i < state.getUpgrades().size(); i++) {
             Upgrade upgrade = state.getUpgrades().get(i);
             upgradeLabels.get(i).setText(upgrade.getUpgradeInfo());
             ImageTextButton button = upgradeButtons.get(i);
             button.setText("Przycisk");
 
-            if (upgrade.getCost() <= state.getMoney()) {
+            if (money.isGreaterOrEqual(upgrade.getCost())) {
                 button.setDisabled(false);
             } else {
                 button.setDisabled(true);

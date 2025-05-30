@@ -34,26 +34,37 @@ public class UpgradeFactory {
         passiveIncomeEffects.put(NormalUpgradeType.PASSIVE_INCOME, 0.1);
         new NormalUpgrade("Passive Income Boost", passiveIncomeEffects, 10, 0.2, state, incomeManager, populationManager);
 
-        // Ulepszenie nowa fabryka
-        new BuildingUpgrade("New Factory", 100, 0.2, state, incomeManager, populationManager, BuildingUpgradeType.FACTORY);
+        // Dodatkowe ulepszenia w UpgradeFactory.java dla lepszego balansu:
 
-        // Ulepszenie modifier fabryk
-        Map<NormalUpgradeType, Double> factoryIncomeEffect = new HashMap<>();
-        factoryIncomeEffect.put(NormalUpgradeType.FACTORY_INCOME, 2.0);
-        new NormalUpgrade("Factory Produce Boost", factoryIncomeEffect, 10, 0.2, state, incomeManager, populationManager);
+        // Ulepszenie efektywności fabryk - drogie ale potężne
+        Map<NormalUpgradeType, Double> factoryEfficiencyBoost = new HashMap<>();
+        factoryEfficiencyBoost.put(NormalUpgradeType.FACTORY_INCOME, 1.5);
+        new NormalUpgrade("Factory Efficiency", factoryEfficiencyBoost, 500, 0.5, state, incomeManager, populationManager);
 
-        Map<NormalUpgradeType, Double> superPassiveIncomeEffect = new HashMap<>();
-        superPassiveIncomeEffect.put(NormalUpgradeType.FACTORY_INCOME, 2.0);
-        superPassiveIncomeEffect.put(NormalUpgradeType.PASSIVE_INCOME, 2.0);
-        new NormalUpgrade("Super Boost", superPassiveIncomeEffect, 10000, 2.0, state, incomeManager, populationManager);
+        // Ulepszenie jakości apartamentów - bardzo drogie, dodaje więcej populacji
+        Map<NormalUpgradeType, Double> apartmentQualityBoost = new HashMap<>();
+        apartmentQualityBoost.put(NormalUpgradeType.PASSIVE_INCOME, 0.2);
+        new NormalUpgrade("Luxury Apartments", apartmentQualityBoost, 5000, 1.8, state, incomeManager, populationManager);
 
-        new BuildingUpgrade("New Apartment", 100, 0.2, state, incomeManager, populationManager, BuildingUpgradeType.APARTMENT);
+        // Ulepszenie atrakcyjności sklepów
+        Map<NormalUpgradeType, Double> shopAttractivenessBoost = new HashMap<>();
+        shopAttractivenessBoost.put(NormalUpgradeType.SHOP_INCOME, 1.2);
+        new NormalUpgrade("Shop Marketing", shopAttractivenessBoost, 2000, 0.6, state, incomeManager, populationManager);
 
-        new BuildingUpgrade("New Shope", 100, 0.2, state, incomeManager, populationManager, BuildingUpgradeType.SHOP);
+        // === FABRYKI - Często kupowane, stabilny wzrost ===
+        // Niska cena początkowa, mały wzrost kosztów
+        new BuildingUpgrade("New Factory", 50, 0.3, state, incomeManager, populationManager, BuildingUpgradeType.FACTORY);
 
-        Map<NormalUpgradeType, Double> shopIncomeEffect = new HashMap<>();
-        shopIncomeEffect.put(NormalUpgradeType.SHOP_INCOME, 2.0);
-        new NormalUpgrade("Shop Income Boost", shopIncomeEffect, 1000, 2.0, state, incomeManager, populationManager);
+        // === APARTAMENTY - Rzadko kupowane, duży impact ===
+        // Wysoka cena początkowa, znaczny wzrost kosztów
+        new BuildingUpgrade("New Apartment", 1000, 1.8, state, incomeManager, populationManager, BuildingUpgradeType.APARTMENT);
+
+        // === SKLEPY - Średnio często kupowane, zależne od populacji ===
+        // Średnia cena, średni wzrost kosztów
+        new BuildingUpgrade("New Shop", 200, 0.5, state, incomeManager, populationManager, BuildingUpgradeType.SHOP);
+
+
+
         // Można dodać więcej ulepszeń...
     }
 
