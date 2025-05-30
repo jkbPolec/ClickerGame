@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Hammer",
+    "description": "Zwiększa wartość kliknięcia.",
+    "cost": 1000,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 2.0,
+    "image": "Hammer.png"
+  }
+]

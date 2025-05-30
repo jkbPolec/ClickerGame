@@ -10,6 +10,7 @@ public class Main extends Game {
 
         LoadSounds();
 
+
         setScreen(new MainScene(this));
     }
 
