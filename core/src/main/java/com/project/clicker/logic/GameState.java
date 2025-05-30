@@ -13,6 +13,7 @@ public class GameState {
     private int factoriesNumber;
     private int shopsNumber;
     private int apartmentsNumber;
+    private IncomeManager incomeManager;
 
     public GameState() {
         this.money = BigNumber.ZERO();
@@ -22,6 +23,13 @@ public class GameState {
         this.shopsNumber = 0;
         this.apartmentsNumber = 0;
         this.upgrades = new ArrayList<>();
+    }
+
+    public void setIncomeManager(IncomeManager incomeManager) {
+        this.incomeManager = incomeManager;
+    }
+    public IncomeManager getIncomeManager() {
+        return incomeManager;
     }
 
     // Gettery i settery dla BigNumber
@@ -76,4 +84,6 @@ public class GameState {
 
     public void addUpgrade(Upgrade upgrade) { this.upgrades.add(upgrade); }
     public List<Upgrade> getUpgrades() { return upgrades; }
+
+
 }

@@ -2,6 +2,7 @@ package com.project.clicker.logic.items;
 
 import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.items.effects.IncreaseClickMoneyEffect;
+import com.project.clicker.logic.items.effects.IncreaseShopMultiplierEffect;
 
 public class ItemFactory {
     public static Item createItem(ItemData data) {
@@ -9,6 +10,9 @@ public class ItemFactory {
         switch (data.effectType) {
             case "IncreaseClickMoney":
                 effect = new IncreaseClickMoneyEffect(data.effectValue);
+                break;
+            case "IncreaseShopMoney":
+                effect = new IncreaseShopMultiplierEffect(data.effectValue);
                 break;
             case "brak":
                 effect = new IncreaseClickMoneyEffect(data.effectValue);

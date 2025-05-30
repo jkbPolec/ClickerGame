@@ -11,10 +11,10 @@
   {
     "id": 2,
     "name": "Diamond",
-    "description": "Jescze nic",
+    "description": "Zwieksza wartość sklepu",
     "cost": 10000,
-    "effectType": "IncreaseClickMoney",
-    "effectValue": 1.0,
+    "effectType": "IncreaseShopMoney",
+    "effectValue": 5.0,
     "image": "Diamond.png"
   },
   {

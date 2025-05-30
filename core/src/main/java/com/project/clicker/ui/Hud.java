@@ -45,7 +45,7 @@ public class Hud {
         TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
 
 
-        shopUI = new ShopUI(skin, itemLoader.getItems());
+        shopUI = new ShopUI(skin, itemLoader.getItems(), state);
         shopUI.setFillParent(true);
         shopUI.center();
         shopUI.setVisible(false);

@@ -18,10 +18,12 @@ public class MainScene implements Screen {
     private UpgradeFactory upgradeFactory;
     private ItemLoader itemLoader;
 
+
     public MainScene(Main game) {
         this.game = game;
         this.state = new GameState();
         this.incomeManager = new IncomeManager(state);
+        state.setIncomeManager(incomeManager);
         this.populationManager = new PopulationManager(state);
         this.upgradeFactory = new UpgradeFactory(state, incomeManager, populationManager);
         this.upgradeFactory.initializeUpgrades();

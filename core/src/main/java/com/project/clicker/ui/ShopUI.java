@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.items.Item;
 import com.project.clicker.ui.TextureFactory;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class ShopUI extends Table {
     private final Window descWindow;
 
-    public ShopUI(Skin skin, List<Item> items) {
+    public ShopUI(Skin skin, List<Item> items, GameState state) {
         this.setBackground(TextureFactory.createPlainTextureRegionDrawable("BLUE"));
         this.setVisible(false);
 
@@ -58,6 +59,9 @@ public class ShopUI extends Table {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println(item);
+                    if (item.buy(state)) {
+                        button.setDisabled(true);
+                    }
                 }
 
                 @Override
