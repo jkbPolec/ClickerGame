@@ -24,12 +24,8 @@ public class BuildingUpgrade extends Upgrade {
     }
 
     @Override
-    public String getUpgradeInfo() {
-        StringBuilder info = new StringBuilder();
-        info.append("Nazwa: ").append(name).append("\n");
-        info.append("Koszt: ").append(cost.toReadableString()).append("$\n");
-        info.append("Liczba użyć: ").append(timesActivated).append("\n");
-        return info.toString();
+    public UpgradeInfo getUpgradeInfo() {
+        return UpgradeInfo.fromBuilding(name, cost, type, timesActivated);
     }
 
     @Override

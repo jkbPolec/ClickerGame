@@ -49,7 +49,6 @@ public abstract class Upgrade {
     public boolean canAfford() {
         return state.getMoney().isGreaterOrEqual(cost);
     }
-
-    public abstract String getUpgradeInfo();
+    public abstract UpgradeInfo getUpgradeInfo();
     public abstract void apply();
 }
