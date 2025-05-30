@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.Upgrade.Upgrade;
+import com.project.clicker.sound.SoundManager;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -38,6 +39,29 @@ public class Hud {
 
         Table mainTable = new Table();
         mainTable.setSize(1920, 1080);
+
+
+        HeaderUI header = new HeaderUI(
+            skin,
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.exit();
+                }
+            },
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    SoundManager sm = SoundManager.getInstance();
+                    sm.setMuted(!sm.isMuted());
+                }
+            }
+        );
+        header.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREEN"));
+
+
+        mainTable.top();
+        mainTable.add(header).colspan(2).expandX().fillX().row();
 
         mainTable.add(upgradesUI.getContainer()).expand().left().padTop(50).padLeft(50).size(640, 1000);
         mainTable.add(clickingUI.getTable()).expand().expand();

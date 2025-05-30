@@ -15,7 +15,17 @@ public class SoundManager {
 
     private final List<Sound> clickSounds = new ArrayList<>();
 
+    private boolean muted = false;
+
     private SoundManager() {}
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
+    }
 
     public static SoundManager getInstance() {
         if (instance == null) instance = new SoundManager();
@@ -31,11 +41,13 @@ public class SoundManager {
     }
 
     public void play(String name) {
+        if (muted) return;
         Sound sound = sounds.get(name);
         if (sound != null) sound.play();
     }
 
     public void playRandomClick() {
+        if (muted) return;
         if (!clickSounds.isEmpty()) {
             clickSounds.get(random.nextInt(clickSounds.size())).play();
         }
