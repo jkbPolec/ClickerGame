@@ -27,12 +27,21 @@ public class Hud {
 
     private final ClickingUI clickingUI;
     private final UpgradesUI upgradesUI;
+    private ShopUI shopUI;
 
     public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
         this.stage = new Stage(viewport);
         this.state = state;
         this.incomeManager = incomeManager;
         this.upgradeFactory = upgradeFactory;
+
+
+        List<String> items = java.util.Arrays.asList("Hammer", "Shovel", "RedPotion", "Diamond", "SilverIngot"); // przykładowe przedmioty
+        shopUI = new ShopUI(skin, items);
+        shopUI.setFillParent(true);
+        shopUI.center();
+        shopUI.setVisible(false);
+        shopUI.setTouchable(Touchable.enabled);
 
         clickingUI = new ClickingUI(skin, state, incomeManager);
         upgradesUI = new UpgradesUI(skin, state);
@@ -55,6 +64,12 @@ public class Hud {
                     SoundManager sm = SoundManager.getInstance();
                     sm.setMuted(!sm.isMuted());
                 }
+            },
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    shopUI.setVisible(true);
+                }
             }
         );
         header.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREEN"));
@@ -68,6 +83,7 @@ public class Hud {
 
         mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
         stage.addActor(mainTable);
+        stage.addActor(shopUI);
     }
 
 
