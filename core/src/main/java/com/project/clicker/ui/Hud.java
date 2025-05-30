@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 public class Hud {
     private final Stage stage;
-    private Label moneyLabel;
-    private Label clickLabel;
-    private Label passiveIncomeLabel;
     private final GameState state;
     private final IncomeManager incomeManager;
     private final UpgradeFactory upgradeFactory;
