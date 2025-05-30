@@ -2,6 +2,7 @@ package com.project.clicker.ui;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.project.clicker.UpgradeFactory;
 import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.Upgrade.Upgrade;
+import com.project.clicker.sound.SoundManager;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -28,8 +30,9 @@ public class Hud {
     private final UpgradeFactory upgradeFactory;
     BigNumber money;
 
-    private final List<Label> upgradeLabels = new ArrayList<>();
-    private final List<ImageTextButton> upgradeButtons = new ArrayList<>();
+    private final ClickingUI clickingUI;
+    private final UpgradesUI upgradesUI;
+    private ShopUI shopUI;
 
     public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
         this.stage = new Stage(viewport);
@@ -37,6 +40,16 @@ public class Hud {
         this.incomeManager = incomeManager;
         this.upgradeFactory = upgradeFactory;
 
+
+        List<String> items = java.util.Arrays.asList("Hammer", "Shovel", "RedPotion", "Diamond", "SilverIngot"); // przykładowe przedmioty
+        shopUI = new ShopUI(skin, items);
+        shopUI.setFillParent(true);
+        shopUI.center();
+        shopUI.setVisible(false);
+        shopUI.setTouchable(Touchable.enabled);
+
+        clickingUI = new ClickingUI(skin, state, incomeManager);
+        upgradesUI = new UpgradesUI(skin, state);
 
         Table mainTable = new Table();
         mainTable.setSize(1920, 1080);
@@ -47,93 +60,50 @@ public class Hud {
         mainTable.add(upgradeContainer).expand().left().padTop(50).padLeft(50).size(640, 1000);
         mainTable.add(clickingTable).expand().expand();
 
-        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREY"));
-        stage.addActor(mainTable);
-    }
-
-
-    private Table createClickingUI(Skin skin) {
-        Table clickingTable = new Table();
-        clickLabel = new Label("Kliknięcia: 0", skin);
-
-        ImageButton imageButton = new ImageButton(skin, "dollar-button");
-        imageButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                state.addClicks(1);
-                incomeManager.addMoneyFromClick();
-                clickLabel.setText("Kliknięcia: " + state.getClicks());
-            }
-        });
-
-        clickingTable.add(clickLabel).row();
-        clickingTable.add(imageButton).size(300, 300).row();
-
-        moneyLabel = new Label("Money: 0$", skin);
-        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$", skin);
-        clickingTable.add(moneyLabel).row();
-        clickingTable.add(passiveIncomeLabel).row();
-
-        return clickingTable;
-    }
-
-    private Table createUpgradesUI(Skin skin) {
-        Table upgradeTable = new Table();
-
-        for (Upgrade upgrade : state.getUpgrades()) {
-            Table buttonTable = new Table();
-            ImageTextButton upgradeButton = new ImageTextButton(".", skin, "upgrade-button");
-            Label description = new Label(upgrade.getUpgradeInfo(), skin, "upgrade-description");
-
-            upgradeButton.setDisabled(false);
-
-            upgradeButton.addListener(new ClickListener() {
+        HeaderUI header = new HeaderUI(
+            skin,
+            new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    upgrade.apply();
+                    Gdx.app.exit();
                 }
-            });
+            },
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    SoundManager sm = SoundManager.getInstance();
+                    sm.setMuted(!sm.isMuted());
+                }
+            },
+            new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    shopUI.setVisible(true);
+                }
+            }
+        );
+        header.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREEN"));
 
-            upgradeLabels.add(description);
-            upgradeButtons.add(upgradeButton);
-            buttonTable.add(upgradeButton).expand().left();
-            buttonTable.add(description).expand().right();
-            buttonTable.setBackground(skin.getDrawable("button"));
-            upgradeTable.add(buttonTable).size(600,150).padBottom(50).row();
-        }
 
-        ScrollPane scrollPane = new ScrollPane(upgradeTable, skin);
-        scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(false, false);
+        mainTable.top();
+        mainTable.add(header).colspan(2).expandX().fillX().row();
 
-        Table container = new Table();
-        container.top().padTop(50);
-        container.add(scrollPane).grow();
-        container.setSize(100, 100);
+        mainTable.add(upgradesUI.getContainer()).expand().left().padTop(50).padLeft(50).size(640, 1000);
+        mainTable.add(clickingUI.getTable()).expand().expand();
 
-        return container;
+        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
+        stage.addActor(mainTable);
+        stage.addActor(shopUI);
     }
+
 
     public Stage getStage() {
         return stage;
     }
 
     public void update() {
-        this.money = state.getMoney();
-        moneyLabel.setText("Money: " + money.toReadableString() + "$");
-        passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$");
-        for (int i = 0; i < state.getUpgrades().size(); i++) {
-            Upgrade upgrade = state.getUpgrades().get(i);
-            upgradeLabels.get(i).setText(upgrade.getUpgradeInfo());
-            ImageTextButton button = upgradeButtons.get(i);
-            button.setText("Przycisk");
-
-            if (money.isGreaterOrEqual(upgrade.getCost())) {
-                button.setDisabled(false);
-            } else {
-                button.setDisabled(true);
-            }
-        }
+        clickingUI.update(state, incomeManager);
+        upgradesUI.update(state);
     }
 
     public void render() {
