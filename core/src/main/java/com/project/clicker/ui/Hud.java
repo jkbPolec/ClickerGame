@@ -1,8 +1,11 @@
 package com.project.clicker.ui;
 
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.project.clicker.UpgradeFactory;
 import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
@@ -26,6 +29,8 @@ public class Hud {
     private final IncomeManager incomeManager;
     private final UpgradeFactory upgradeFactory;
     BigNumber money;
+    private Texture backgroundTexture;
+
     private final ClickingUI clickingUI;
     private final UpgradesUI upgradesUI;
     private ShopUI shopUI;
@@ -36,6 +41,8 @@ public class Hud {
         this.incomeManager = incomeManager;
         this.upgradeFactory = upgradeFactory;
 
+        this.backgroundTexture = new Texture(Gdx.files.internal("City-Backgrounds-Pixel-Art.png"));
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
 
 
         shopUI = new ShopUI(skin, itemLoader.getItems());
@@ -84,7 +91,7 @@ public class Hud {
         mainTable.add(upgradesUI.getContainer()).expand().left().padTop(50).padLeft(50).size(640, 1000);
         mainTable.add(clickingUI.getTable()).expand().expand();
 
-        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
+        mainTable.setBackground(backgroundDrawable);
         stage.addActor(mainTable);
         stage.addActor(shopUI);
     }

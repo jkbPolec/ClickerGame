@@ -24,21 +24,9 @@ public class NormalUpgrade extends Upgrade {
     }
 
     @Override
-    public String getUpgradeInfo() {
-        StringBuilder info = new StringBuilder();
-        info.append("Nazwa: ").append(name).append("\n");
-        info.append("Koszt: ").append(cost).append("$\n");
-        info.append("Efekty:\n");
-
-        for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
-            info.append(" - ")
-                .append(entry.getKey().toString())
-                .append(": ")
-                .append(entry.getValue())
-                .append("\n");
-        }
-        info.append("Liczba użyć: ").append(timesActivated).append("\n");
-        return info.toString();
+    public UpgradeInfo getUpgradeInfo() {
+        boolean isBonus = name.endsWith(" !BONUS!");
+        return UpgradeInfo.fromNormal(name, cost, effects, timesActivated, isBonus);
     }
 
     public Map<NormalUpgradeType, Double> getEffects() {
