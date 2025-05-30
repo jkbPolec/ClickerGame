@@ -11,21 +11,41 @@ public class GameState {
     private long population;
     private List<Upgrade> upgrades;
     private int factoriesNumber;
+    private int shopsNumber;
+    private int apartmentsNumber;
 
     public GameState() {
         this.money = 0;
         this.clicks = 0;
         this.population = 0;
         this.factoriesNumber = 0;
+        this.shopsNumber = 0;
+        this.apartmentsNumber = 0;
         this.upgrades = new ArrayList<>();
     }
 
-    public void getFactioriesNumber() {
-        this.factoriesNumber++;
+    public int getFactioriesNumber() {
+        return factoriesNumber;
+    }
+
+    public int getShopsNumber() {
+        return shopsNumber;
+    }
+
+    public int getApartmentsNumber() {
+        return apartmentsNumber;
     }
 
     public void addFactory(int value) {
         this.factoriesNumber += value;
+    }
+
+    public void addShop(int value) {
+        this.shopsNumber += value;
+    }
+
+    public void addApartment(int value) {
+        this.apartmentsNumber += value;
     }
 
     public long getMoney() {

@@ -5,11 +5,12 @@ import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.PopulationManager;
 
 
-public class FactoryUpgrade extends Upgrade {
+public class BuildingUpgrade extends Upgrade {
+    BuildingUpgradeType type;
 
-
-    public FactoryUpgrade(String name, long cost, double costIncrease, GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
+    public BuildingUpgrade(String name, long cost, double costIncrease, GameState state, IncomeManager incomeManager, PopulationManager populationManager, BuildingUpgradeType type) {
         super(name, cost, costIncrease, state, incomeManager, populationManager);
+        this.type = type;
     }
 
     @Override
@@ -29,8 +30,20 @@ public class FactoryUpgrade extends Upgrade {
             state.addMoney(-cost);
             cost += (long) (costIncrease * cost);
 
-            state.addFactory(1);
-            incomeManager.increaseFactoryIncome(1);
+
+            switch (type) {
+                case FACTORY:
+                    state.addFactory(1);
+                    incomeManager.increaseFactoryIncome(1);
+                    break;
+                case SHOP:
+                    state.addShop(1);
+                    break;
+                case APARTMENT:
+                    state.addApartment(1);
+                    populationManager.increasePopulation(500);
+                    break;
+            }
         }
     }
 }

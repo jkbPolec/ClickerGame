@@ -2,7 +2,6 @@ package com.project.clicker.ui;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.project.clicker.UpgradeFactory;
 import com.project.clicker.logic.GameState;
 import com.badlogic.gdx.Gdx;

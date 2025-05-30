@@ -4,8 +4,6 @@ import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.IncomeManager;
 import com.project.clicker.logic.PopulationManager;
 
-import java.util.Map;
-
 public abstract class Upgrade {
     protected String name;
     protected long cost;

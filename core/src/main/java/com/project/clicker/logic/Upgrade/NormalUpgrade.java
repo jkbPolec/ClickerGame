@@ -7,9 +7,9 @@ import com.project.clicker.logic.PopulationManager;
 import java.util.Map;
 
 public class NormalUpgrade extends Upgrade {
-    Map<UpgradeType, Double> effects;
+    Map<NormalUpgradeType, Double> effects;
 
-    public NormalUpgrade(String name, Map<UpgradeType, Double> effects, long cost, double costIncrease,
+    public NormalUpgrade(String name, Map<NormalUpgradeType, Double> effects, long cost, double costIncrease,
                          GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
         super(name, cost, costIncrease, state, incomeManager, populationManager);
         this.effects = effects;
@@ -22,7 +22,7 @@ public class NormalUpgrade extends Upgrade {
         info.append("Koszt: ").append(cost).append("\n");
         info.append("Efekty:\n");
 
-        for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+        for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
             info.append(" - ")
                 .append(entry.getKey().toString())
                 .append(": ")
@@ -33,7 +33,7 @@ public class NormalUpgrade extends Upgrade {
         return info.toString();
     }
 
-    public Map<UpgradeType, Double> getEffects() {
+    public Map<NormalUpgradeType, Double> getEffects() {
         return effects;
     }
 
@@ -45,7 +45,7 @@ public class NormalUpgrade extends Upgrade {
             state.addMoney(-cost);
             cost += (long) (costIncrease * cost);
 
-            for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+            for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
                 switch (entry.getKey()) {
                     case CLICK_INCOME:
                         incomeManager.increaseMoneyPerClickMultiplier(entry.getValue());
@@ -56,6 +56,8 @@ public class NormalUpgrade extends Upgrade {
                     case FACTORY_INCOME:
                         incomeManager.increaseFactoryIncomeMultiplier(entry.getValue());
                         break;
+                    case SHOP_INCOME:
+                        incomeManager.increaseIncomeFromShopsMultiplier(entry.getValue());
                 }
             }
 
@@ -67,12 +69,12 @@ public class NormalUpgrade extends Upgrade {
         boolean shouldBeBonus = (timesActivated + 1) % 10 == 0;
 
         if (shouldBeBonus && !name.endsWith(" !BONUS!")) {
-            for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+            for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
                 entry.setValue(entry.getValue() * 2);
             }
             name += " !BONUS!";
         } else if (!shouldBeBonus && name.endsWith(" !BONUS!")) {
-            for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+            for (Map.Entry<NormalUpgradeType, Double> entry : effects.entrySet()) {
                 entry.setValue(entry.getValue() / 2);
             }
             name = name.substring(0, name.length() - " !BONUS!".length());
