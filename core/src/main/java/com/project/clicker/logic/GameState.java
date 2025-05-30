@@ -10,12 +10,22 @@ public class GameState {
     private long clicks;
     private long population;
     private List<Upgrade> upgrades;
+    private int factoriesNumber;
 
     public GameState() {
         this.money = 0;
         this.clicks = 0;
         this.population = 0;
+        this.factoriesNumber = 0;
         this.upgrades = new ArrayList<>();
+    }
+
+    public void getFactioriesNumber() {
+        this.factoriesNumber++;
+    }
+
+    public void addFactory(int value) {
+        this.factoriesNumber += value;
     }
 
     public long getMoney() {

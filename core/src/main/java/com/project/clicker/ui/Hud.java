@@ -45,7 +45,7 @@ public class Hud {
         mainTable.add(upgradeContainer).expand().left().padTop(50).padLeft(50).size(640, 1000);
         mainTable.add(clickingTable).expand().expand();
 
-        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
+        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREY"));
         stage.addActor(mainTable);
     }
 
@@ -84,7 +84,6 @@ public class Hud {
             Label description = new Label(upgrade.getUpgradeInfo(), skin, "upgrade-description");
 
             upgradeButton.setDisabled(false);
-            upgradeButton.setTouchable(Touchable.enabled);
 
             upgradeButton.addListener(new ClickListener() {
                 @Override
@@ -128,10 +127,8 @@ public class Hud {
 
             if (upgrade.getCost() <= state.getMoney()) {
                 button.setDisabled(false);
-                button.setTouchable(Touchable.enabled);
             } else {
                 button.setDisabled(true);
-                button.setTouchable(Touchable.disabled);
             }
         }
     }

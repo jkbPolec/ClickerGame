@@ -1,0 +1,81 @@
+package com.project.clicker.logic.Upgrade;
+
+import com.project.clicker.logic.GameState;
+import com.project.clicker.logic.IncomeManager;
+import com.project.clicker.logic.PopulationManager;
+
+import java.util.Map;
+
+public class NormalUpgrade extends Upgrade {
+    Map<UpgradeType, Double> effects;
+
+    public NormalUpgrade(String name, Map<UpgradeType, Double> effects, long cost, double costIncrease,
+                         GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
+        super(name, cost, costIncrease, state, incomeManager, populationManager);
+        this.effects = effects;
+    }
+
+    @Override
+    public String getUpgradeInfo() {
+        StringBuilder info = new StringBuilder();
+        info.append("Nazwa: ").append(name).append("\n");
+        info.append("Koszt: ").append(cost).append("\n");
+        info.append("Efekty:\n");
+
+        for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+            info.append(" - ")
+                .append(entry.getKey().toString())
+                .append(": ")
+                .append(entry.getValue())
+                .append("\n");
+        }
+        info.append("Liczba użyć: ").append(timesActivated).append("\n");
+        return info.toString();
+    }
+
+    public Map<UpgradeType, Double> getEffects() {
+        return effects;
+    }
+
+    @Override
+    public void apply() {
+        if (cost <= state.getMoney()) {
+            active = true;
+            timesActivated++;
+            state.addMoney(-cost);
+            cost += (long) (costIncrease * cost);
+
+            for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+                switch (entry.getKey()) {
+                    case CLICK_INCOME:
+                        incomeManager.increaseMoneyPerClickMultiplier(entry.getValue());
+                        break;
+                    case PASSIVE_INCOME:
+                        incomeManager.increasePassiveIncomeMultiplier(entry.getValue());
+                        break;
+                    case FACTORY_INCOME:
+                        incomeManager.increaseFactoryIncomeMultiplier(entry.getValue());
+                        break;
+                }
+            }
+
+            updateBonusEffect();
+        }
+    }
+
+    private void updateBonusEffect() {
+        boolean shouldBeBonus = (timesActivated + 1) % 10 == 0;
+
+        if (shouldBeBonus && !name.endsWith(" !BONUS!")) {
+            for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+                entry.setValue(entry.getValue() * 2);
+            }
+            name += " !BONUS!";
+        } else if (!shouldBeBonus && name.endsWith(" !BONUS!")) {
+            for (Map.Entry<UpgradeType, Double> entry : effects.entrySet()) {
+                entry.setValue(entry.getValue() / 2);
+            }
+            name = name.substring(0, name.length() - " !BONUS!".length());
+        }
+    }
+}
