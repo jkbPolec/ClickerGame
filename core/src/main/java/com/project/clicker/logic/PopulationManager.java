@@ -7,7 +7,7 @@ public class PopulationManager {
         this.state = state;
     }
 
-    public void increasePopulation(int people) {
+    public void increasePopulation(long people) {
         state.addPopulation(people);
     }
 

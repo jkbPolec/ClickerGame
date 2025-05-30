@@ -5,58 +5,87 @@ import com.badlogic.gdx.Input;
 
 public class IncomeManager {
     private final GameState state;
-    private double passiveIncomeMultiplier;
-    private double moneyPerClickMultiplier;
+    private final IncomeMultipliers multipliers = new IncomeMultipliers();
+    private BigNumber basicPassiveIncome = new BigNumber(10);
+    private BigNumber basicPerClickIncome = BigNumber.ONE();
+    private BigNumber factoryIncome = BigNumber.ZERO();
+
     private float timer = 0f;
 
     public IncomeManager(GameState state) {
         this.state = state;
-        passiveIncomeMultiplier = 1;
-        moneyPerClickMultiplier = 1;
     }
 
     public void update(float delta) {
         timer += delta;
         if (timer >= 1f) {
-            System.out.println(calculatePassiveIncome());
             int ticks = (int)(timer);
-            state.addMoney(ticks * calculatePassiveIncome());
+            BigNumber passiveIncome = calculatePassiveIncome();
+            BigNumber totalIncome = passiveIncome.multiply(ticks);
+            state.addMoney(totalIncome);
             timer -= ticks;
         }
 
-        // Debugging: Press SPACE to add 100000 money
+        // Debugging: Press SPACE to add money
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            state.addMoney(100000);
+            state.addMoney(new BigNumber(100000));
         }
     }
 
-
     public void addMoneyFromClick() {
-        state.addMoney(calculateMoneyPerClick());
+        BigNumber clickIncome = calculateMoneyPerClick();
+        state.addMoney(clickIncome);
+        state.addClicks(1);
     }
 
-
-    public void increasePassiveIncome(double value) {
-        passiveIncomeMultiplier += value;
+    public void increasePassiveIncomeMultiplier(double value) {
+        multipliers.passive += value;
     }
 
-    public void increaseMoneyPerClick(double value) {
-        moneyPerClickMultiplier +=  value;
+    public void increaseMoneyPerClickMultiplier(double value) {
+        multipliers.perClick += value;
     }
 
-    public long calculateMoneyPerClick() {
-        long value = 1;
-        value *= (long) moneyPerClickMultiplier;
-        return value;
+    public void increaseFactoryIncome(BigNumber value) {
+        factoryIncome = factoryIncome.add(value);
     }
 
-    public long getPassiveIncome() {
+    public void increaseFactoryIncome(long value) {
+        factoryIncome = factoryIncome.add(value);
+    }
+
+    public void increaseFactoryIncomeMultiplier(double value) {
+        multipliers.factory += value;
+    }
+
+    public void increaseIncomeFromShopsMultiplier(double value) {
+        multipliers.shops *= value;
+    }
+
+    public BigNumber getPassiveIncome() {
         return calculatePassiveIncome();
     }
 
-    public long calculatePassiveIncome() {
-        long value = 10;
-        value *= (long) passiveIncomeMultiplier;
+    private BigNumber calculatePassiveIncome() {
+        BigNumber value = new BigNumber(basicPassiveIncome);
+
+        // Dochód z fabryk
+        BigNumber factoryContribution = factoryIncome.multiply(multipliers.factory);
+        value = value.add(factoryContribution);
+
+        // Dochód ze sklepów (populacja * liczba sklepów * mnożnik)
+        BigNumber shopContribution = state.getPopulation()
+                .multiply(state.getShopsNumber())
+                .multiply(multipliers.shops);
+        value = value.add(shopContribution);
+
+        // Zastosuj mnożnik pasywny
+        value = value.multiply(multipliers.passive);
+
         return value;
+    }
+
+    private BigNumber calculateMoneyPerClick() {
+        return basicPerClickIncome.multiply(multipliers.perClick);
     }
 }
