@@ -1,4 +1,6 @@
-package com.project.clicker.logic;
+package com.project.clicker.logic.managers;
+
+import com.project.clicker.logic.GameState;
 
 public class PopulationManager {
     private GameState state;

@@ -1,12 +1,15 @@
 package com.project.clicker.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
-import com.project.clicker.logic.IncomeManager;
+import com.project.clicker.logic.managers.IncomeManager;
 import com.project.clicker.sound.SoundManager;
 
 public class ClickingUI {
@@ -17,17 +20,28 @@ public class ClickingUI {
     BigNumber money;
 
     public ClickingUI(Skin skin, GameState state, IncomeManager incomeManager) {
+
+
+        // Styl Labela bez tła i z niestandardową czcionką
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont(Gdx.files.internal("pixel_font_clickingUI.fnt"));
+        labelStyle.fontColor = Color.WHITE;
+
+
         table = new Table();
-        clickLabel = new Label("Kliknięcia: 0", skin);
+        clickLabel = new Label("Clicks: 0", labelStyle);
 
 
         ImageButton imageButton = new ImageButton(skin, "dollar-button");
         imageButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println(state.getClicks());
                 state.addClicks(1);
-                incomeManager.addMoneyFromClick();
-                clickLabel.setText("Kliknięcia: " + state.getClicks());
+                System.out.println(state.getClicks());
+                incomeManager.processClick();
+
+                clickLabel.setText("Clicks: " + state.getClicks());
                 SoundManager.getInstance().playRandomClick();
 
                 // Animacja
@@ -51,8 +65,8 @@ public class ClickingUI {
         table.add(imageButton).size(300, 300).row();
         imageButton.setOrigin(150, 150);
 
-        moneyLabel = new Label("Money: 0$", skin);
-        passiveIncomeLabel = new Label("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$", skin);
+        moneyLabel = new Label("Money: 0$", labelStyle);
+        passiveIncomeLabel = new Label("Passive income: " + incomeManager.getCurrentPassiveIncome() + "$", labelStyle);
         table.add(moneyLabel).row();
         table.add(passiveIncomeLabel).row();
     }
@@ -62,8 +76,9 @@ public class ClickingUI {
     }
 
     public void update(GameState state, IncomeManager incomeManager) {
+        clickLabel.setText("Clicks: " + state.getClicks());
         money = state.getMoney();
         moneyLabel.setText("Money: " + money.toReadableString() + "$");
-        passiveIncomeLabel.setText("Pas. przyrost: " + incomeManager.getPassiveIncome() + "$");
+        passiveIncomeLabel.setText("Passive income: " + incomeManager.getCurrentPassiveIncome() + "$");
     }
 }

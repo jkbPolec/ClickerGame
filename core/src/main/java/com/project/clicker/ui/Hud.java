@@ -1,48 +1,47 @@
 package com.project.clicker.ui;
 
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.project.clicker.UpgradeFactory;
 import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.Upgrade.Upgrade;
+import com.project.clicker.logic.managers.IncomeManager;
+import com.project.clicker.logic.managers.ResetManager;
+import com.project.clicker.logic.items.ItemLoader;
 import com.project.clicker.sound.SoundManager;
-
-import java.util.List;
-import java.util.ArrayList;
 
 public class Hud {
     private final Stage stage;
-    private Label moneyLabel;
-    private Label clickLabel;
-    private Label passiveIncomeLabel;
     private final GameState state;
     private final IncomeManager incomeManager;
-    private final UpgradeFactory upgradeFactory;
     BigNumber money;
+    private Texture backgroundTexture;
 
     private final ClickingUI clickingUI;
     private final UpgradesUI upgradesUI;
     private ShopUI shopUI;
+    private InfoUI multipliersUI;
+    private SPButtonUI spButtonUI; // Nowa klasa dla przycisków Special Points
 
-    public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory) {
+    public Hud(Viewport viewport, Skin skin, GameState state, IncomeManager incomeManager, UpgradeFactory upgradeFactory, ItemLoader itemLoader, ResetManager resetManager) {
         this.stage = new Stage(viewport);
         this.state = state;
         this.incomeManager = incomeManager;
-        this.upgradeFactory = upgradeFactory;
 
+        this.backgroundTexture = new Texture(Gdx.files.internal("City-Backgrounds-Pixel-Art.png"));
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
 
-        List<String> items = java.util.Arrays.asList("Hammer", "Shovel", "RedPotion", "Diamond", "SilverIngot"); // przykładowe przedmioty
-        shopUI = new ShopUI(skin, items);
+        shopUI = new ShopUI(skin, itemLoader.getItems(), state, incomeManager);
         shopUI.setFillParent(true);
         shopUI.center();
         shopUI.setVisible(false);
@@ -50,11 +49,13 @@ public class Hud {
 
         clickingUI = new ClickingUI(skin, state, incomeManager);
         upgradesUI = new UpgradesUI(skin, state);
+        multipliersUI = new InfoUI(skin, incomeManager.getMultipliers(), state);
+        spButtonUI = new SPButtonUI(skin, resetManager, state); // Utworzenie UI dla przycisków SP
 
         Table mainTable = new Table();
         mainTable.setSize(1920, 1080);
 
-
+        // Header pozostaje bez zmian
         HeaderUI header = new HeaderUI(
             skin,
             new ClickListener() {
@@ -77,20 +78,63 @@ public class Hud {
                 }
             }
         );
-        header.setBackground(TextureFactory.createPlainTextureRegionDrawable("GREEN"));
 
+        Texture headerTexture = new Texture(Gdx.files.internal("header.png"));
+        headerTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        TextureRegionDrawable headerBackground = new TextureRegionDrawable(new TextureRegion(headerTexture));
+        header.setBackground(headerBackground);
 
         mainTable.top();
-        mainTable.add(header).colspan(2).expandX().fillX().row();
+        // Header zajmuje całą górną część (2 kolumny)
+        mainTable.add(header).colspan(3).expandX().fillX().row();
 
-        mainTable.add(upgradesUI.getContainer()).expand().left().padTop(50).padLeft(50).size(640, 1000);
-        mainTable.add(clickingUI.getTable()).expand().expand();
+        // Tabela z 3 kolumnami pod headerem
+        // Kolumna 1: UpgradesUI (stały rozmiar 650x1000)
+        mainTable.add(upgradesUI.getContainer())
+            .left()
+            .padTop(10)
+            .padLeft(10)
+            .size(650, 1000);
 
-        mainTable.setBackground(TextureFactory.createPlainTextureRegionDrawable("RED"));
+        // Kolumna 2: Przyciski SP i label statystyk (środkowa kolumna)
+        Table statsTable = new Table();
+
+        // Dodanie przycisków Special Points na górze
+        statsTable.add(spButtonUI.getContainer())
+            .expandX()
+            .fillX()
+            .pad(10)
+            .top()
+            .row();
+
+        // Pusta przestrzeń która się rozciąga
+        statsTable.add().expand().row();
+
+        // Dodanie labela statystyk na dole
+        statsTable.add(multipliersUI.getLabel())
+            .expandX()
+            .fillX()
+            .pad(20)
+            .bottom();
+
+        mainTable.add(statsTable)
+            .expandX()
+            .expandY()
+            .fillX()
+            .fillY()
+            .padTop(10);
+
+        // Kolumna 3: ClickingUI (zachowuje obecny rozmiar)
+        mainTable.add(clickingUI.getTable())
+            .right()
+            .padTop(10)
+            .padRight(10)
+            .size(600);
+
+        mainTable.setBackground(backgroundDrawable);
         stage.addActor(mainTable);
         stage.addActor(shopUI);
     }
-
 
     public Stage getStage() {
         return stage;
@@ -99,6 +143,8 @@ public class Hud {
     public void update() {
         clickingUI.update(state, incomeManager);
         upgradesUI.update(state);
+        multipliersUI.update(incomeManager.getMultipliers(), state);
+        spButtonUI.update(); // Aktualizacja przycisków Special Points
     }
 
     public void render() {
@@ -110,6 +156,12 @@ public class Hud {
 
     public void dispose() {
         stage.dispose();
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose();
+        }
+    }
+
+    public interface UpdateCallback {
+        void onButtonClicked();
     }
 }
-

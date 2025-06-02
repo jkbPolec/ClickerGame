@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Hammer",
+    "description": "Increase money per click",
+    "cost": 10,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 2.0,
+    "image": "Hammer.png"
+  },
+  {
+    "id": 2,
+    "name": "Diamond",
+    "description": "Increase shop multiplier",
+    "cost": 100,
+    "effectType": "IncreaseShopMoney",
+    "effectValue": 5.0,
+    "image": "Diamond.png"
+  },
+  {
+    "id": 3,
+    "name": "Red Potion",
+    "description": "Increase money per click",
+    "cost": 10,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 2.0,
+    "image": "RedPotion.png"
+  },
+  {
+    "id": 4,
+    "name": "Shovel",
+    "description": "Increase money per click",
+    "cost": 1,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 2.0,
+    "image": "Shovel.png"
+  },
+  {
+    "id": 5,
+    "name": "Silver Ingot",
+    "description": "Increase money per click",
+    "cost": 10,
+    "effectType": "IncreaseClickMoney",
+    "effectValue": 2.0,
+    "image": "SilverIngot.png"
+  }
+]

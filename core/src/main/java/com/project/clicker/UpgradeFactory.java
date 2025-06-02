@@ -1,8 +1,8 @@
 package com.project.clicker;
 
 import com.project.clicker.logic.GameState;
-import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.PopulationManager;
+import com.project.clicker.logic.managers.IncomeManager;
+import com.project.clicker.logic.managers.PopulationManager;
 import com.project.clicker.logic.Upgrade.BuildingUpgrade;
 import com.project.clicker.logic.Upgrade.BuildingUpgradeType;
 import com.project.clicker.logic.Upgrade.NormalUpgrade;
@@ -26,7 +26,7 @@ public class UpgradeFactory {
     public void initializeUpgrades() {
         // Ulepszenie zwiększające dochód z kliknięcia
         Map<NormalUpgradeType, Double> doubleClickEffects = new HashMap<>();
-        doubleClickEffects.put(NormalUpgradeType.CLICK_INCOME, 0.1);
+        doubleClickEffects.put(NormalUpgradeType.CLICK_INCOME, 0.2);
         new NormalUpgrade("Click Income Boost", doubleClickEffects, 10, 0.2, state, incomeManager, populationManager);
 
         // Ulepszenie zwiększające pasywny dochód
