@@ -1,19 +1,30 @@
-package com.project.clicker.logic;
+package com.project.clicker.logic.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.project.clicker.logic.BigNumber;
+import com.project.clicker.logic.GameState;
 
 public class IncomeManager {
     private final GameState state;
     private final IncomeMultipliers multipliers = new IncomeMultipliers();
     private BigNumber basicPassiveIncome = new BigNumber(10);
     private BigNumber basicPerClickIncome = BigNumber.ONE();
-    private BigNumber factoryIncome = BigNumber.ZERO();
+    private BigNumber basicShopsIncome = BigNumber.ONE();
+    private BigNumber basicFactoryIncome = BigNumber.ONE();
 
     private float timer = 0f;
 
     public IncomeManager(GameState state) {
         this.state = state;
+    }
+
+    public IncomeMultipliers getMultipliers() {
+        return multipliers;
+    }
+
+    public void resetIncome() {
+        basicPassiveIncome = new BigNumber(10);
     }
 
     public void update(float delta) {
@@ -35,8 +46,13 @@ public class IncomeManager {
     public void addMoneyFromClick() {
         BigNumber clickIncome = calculateMoneyPerClick();
         state.addMoney(clickIncome);
-        state.addClicks(1);
     }
+
+    public void multiplyBasicIncomeFromShops(double value) {basicShopsIncome.multiply(value);}
+
+    public void multiplyBasicMoneyPerClick(double value) {basicPerClickIncome.multiply(value);}
+
+    public void multiplyBasicFactoryIncome(double value) {basicFactoryIncome.multiply(value);}
 
     public void increasePassiveIncomeMultiplier(double value) {
         multipliers.passive += value;
@@ -44,14 +60,6 @@ public class IncomeManager {
 
     public void increaseMoneyPerClickMultiplier(double value) {
         multipliers.perClick += value;
-    }
-
-    public void increaseFactoryIncome(BigNumber value) {
-        factoryIncome = factoryIncome.add(value);
-    }
-
-    public void increaseFactoryIncome(long value) {
-        factoryIncome = factoryIncome.add(value);
     }
 
     public void increaseFactoryIncomeMultiplier(double value) {
@@ -70,7 +78,7 @@ public class IncomeManager {
         BigNumber value = new BigNumber(basicPassiveIncome);
 
         // Dochód z fabryk
-        BigNumber factoryContribution = factoryIncome.multiply(multipliers.factory);
+        BigNumber factoryContribution = basicFactoryIncome.multiply(state.getFactoriesNumber()).multiply(multipliers.factory);
         value = value.add(factoryContribution);
 
         // Dochód ze sklepów (populacja * liczba sklepów * mnożnik)

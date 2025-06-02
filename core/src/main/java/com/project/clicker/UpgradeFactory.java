@@ -1,8 +1,8 @@
 package com.project.clicker;
 
 import com.project.clicker.logic.GameState;
-import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.PopulationManager;
+import com.project.clicker.logic.managers.IncomeManager;
+import com.project.clicker.logic.managers.PopulationManager;
 import com.project.clicker.logic.Upgrade.BuildingUpgrade;
 import com.project.clicker.logic.Upgrade.BuildingUpgradeType;
 import com.project.clicker.logic.Upgrade.NormalUpgrade;

@@ -2,8 +2,8 @@
   {
     "id": 1,
     "name": "Hammer",
-    "description": "Zwiększa wartość kliknięcia.",
-    "cost": 1000,
+    "description": "Increase money per click",
+    "cost": 10,
     "effectType": "IncreaseClickMoney",
     "effectValue": 2.0,
     "image": "Hammer.png"
@@ -11,8 +11,8 @@
   {
     "id": 2,
     "name": "Diamond",
-    "description": "Zwieksza wartość sklepu",
-    "cost": 10000,
+    "description": "Increase shop multiplier",
+    "cost": 100,
     "effectType": "IncreaseShopMoney",
     "effectValue": 5.0,
     "image": "Diamond.png"
@@ -20,28 +20,28 @@
   {
     "id": 3,
     "name": "Red Potion",
-    "description": "Tez nic",
-    "cost": 20000,
+    "description": "Increase money per click",
+    "cost": 10,
     "effectType": "IncreaseClickMoney",
-    "effectValue": 1.0,
+    "effectValue": 2.0,
     "image": "RedPotion.png"
   },
   {
     "id": 4,
     "name": "Shovel",
-    "description": "Wciaz nic",
-    "cost": 50000,
+    "description": "Increase money per click",
+    "cost": 1,
     "effectType": "IncreaseClickMoney",
-    "effectValue": 1.0,
+    "effectValue": 2.0,
     "image": "Shovel.png"
   },
   {
     "id": 5,
     "name": "Silver Ingot",
-    "description": "Nadal nic",
-    "cost": 100000,
+    "description": "Increase money per click",
+    "cost": 10,
     "effectType": "IncreaseClickMoney",
-    "effectValue": 1.0,
+    "effectValue": 2.0,
     "image": "SilverIngot.png"
   }
 ]

@@ -5,6 +5,8 @@ import com.project.clicker.logic.items.effects.IncreaseClickMoneyEffect;
 import com.project.clicker.logic.items.effects.IncreaseShopMultiplierEffect;
 
 public class ItemFactory {
+
+
     public static Item createItem(ItemData data) {
         IItemEffect effect = null;
         switch (data.effectType) {
@@ -25,7 +27,7 @@ public class ItemFactory {
             data.id,
             data.name,
             data.description,
-            new BigNumber(data.cost),
+            data.cost,
             effect,
             data.image
         );

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.items.Item;
+import com.project.clicker.logic.managers.IncomeManager;
 import com.project.clicker.ui.TextureFactory;
 
 
@@ -21,11 +22,11 @@ import java.util.List;
 public class ShopUI extends Table {
     private final Window descWindow;
 
-    public ShopUI(Skin skin, List<Item> items, GameState state) {
+    public ShopUI(Skin skin, List<Item> items, GameState state, IncomeManager incomeManager) {
         this.setBackground(TextureFactory.createPlainTextureRegionDrawable("BLUE"));
         this.setVisible(false);
 
-        TextButton closeButton = new TextButton("Zamknij", skin);
+        TextButton closeButton = new TextButton("Exit", skin);
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -34,7 +35,7 @@ public class ShopUI extends Table {
         });
         this.add(closeButton).pad(10).colspan(4).row();
 
-        Label title = new Label("Sklep", skin);
+        Label title = new Label("Shop", skin);
         this.add(title).padBottom(20).colspan(4).row();
 
         // Okienko opisu (na początku niewidoczne)
@@ -59,7 +60,7 @@ public class ShopUI extends Table {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     System.out.println(item);
-                    if (item.buy(state)) {
+                    if (item.buy(state, incomeManager)) {
                         button.setDisabled(true);
                     }
                 }

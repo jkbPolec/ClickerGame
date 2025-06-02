@@ -1,8 +1,9 @@
 package com.project.clicker.logic.items;
 
 import com.project.clicker.logic.GameState;
+import com.project.clicker.logic.managers.IncomeManager;
 
 public interface IItemEffect {
-    void apply(GameState state);
+    void apply(IncomeManager incomeManager);
     String getDescription();
 }

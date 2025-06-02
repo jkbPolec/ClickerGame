@@ -1,13 +1,14 @@
 package com.project.clicker.logic.Upgrade;
 
 import com.project.clicker.logic.GameState;
-import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.PopulationManager;
+import com.project.clicker.logic.managers.IncomeManager;
+import com.project.clicker.logic.managers.PopulationManager;
 import com.project.clicker.logic.BigNumber;
 
 public abstract class Upgrade {
     protected String name;
     protected BigNumber cost;
+    protected BigNumber originalCost;
     protected double costIncrease;
     protected boolean active;
     protected int timesActivated = 0;
@@ -20,6 +21,7 @@ public abstract class Upgrade {
                    GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
         this.name = name;
         this.cost = cost;
+        this.originalCost = cost;
         this.costIncrease = costIncrease;
         this.active = false;
         this.incomeManager = incomeManager;
@@ -32,6 +34,12 @@ public abstract class Upgrade {
     public Upgrade(String name, long cost, double costIncrease,
                    GameState state, IncomeManager incomeManager, PopulationManager populationManager) {
         this(name, new BigNumber(cost), costIncrease, state, incomeManager, populationManager);
+    }
+
+    public void reset() {
+        cost = originalCost;
+        timesActivated = 0;
+        active = false;
     }
 
     public BigNumber getCost() {

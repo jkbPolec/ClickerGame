@@ -2,8 +2,8 @@ package com.project.clicker.logic.Upgrade;
 
 import com.project.clicker.logic.BigNumber;
 import com.project.clicker.logic.GameState;
-import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.PopulationManager;
+import com.project.clicker.logic.managers.IncomeManager;
+import com.project.clicker.logic.managers.PopulationManager;
 
 import java.util.Map;
 

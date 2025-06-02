@@ -2,6 +2,7 @@ package com.project.clicker.logic.items.effects;
 
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.items.IItemEffect;
+import com.project.clicker.logic.managers.IncomeManager;
 
 public class IncreaseClickMoneyEffect implements IItemEffect {
     private final double multiplier;
@@ -11,8 +12,9 @@ public class IncreaseClickMoneyEffect implements IItemEffect {
     }
 
     @Override
-    public void apply(GameState state) {
-        state.getIncomeManager().increaseMoneyPerClickMultiplier(multiplier);
+    public void apply(IncomeManager incomeManager) {
+        System.out.println("Increase click money");
+        incomeManager.multiplyBasicMoneyPerClick(multiplier);
     }
 
 

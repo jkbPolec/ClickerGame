@@ -2,6 +2,7 @@ package com.project.clicker.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -89,12 +90,59 @@ public class UpgradesUI {
             upgradeTable.add(button).width(600).height(150).padBottom(50).row();
         }
 
-        ScrollPane scrollPane = new ScrollPane(upgradeTable, skin);
+
+        ScrollPane.ScrollPaneStyle scrollStyle = new ScrollPane.ScrollPaneStyle();
+
+        try {
+            // Wczytaj własne tekstury dla scrolla
+            Texture scrollKnobTexture = new Texture("scroll_knob.png");
+
+            scrollKnobTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+            // Stwórz TextureRegionDrawable z ustalonymi wymiarami
+            TextureRegionDrawable scrollKnobDrawable = new TextureRegionDrawable(new TextureRegion(scrollKnobTexture));
+
+            Pixmap barPixmap = new Pixmap(16, 100, Pixmap.Format.RGBA8888); // 100 px wysokości przykładowo
+            barPixmap.setColor(191f / 255f, 161f / 255f, 85f / 255f, 1f); // ciemniejszy brąz
+            barPixmap.fill();
+            Texture barTexture = new Texture(barPixmap);
+            TextureRegionDrawable scrollBarDrawable = new TextureRegionDrawable(new TextureRegion(barTexture));
+
+            // KLUCZ: Ustaw minimalne wymiary dla scrolla
+            scrollKnobDrawable.setMinWidth(24);  // Szerokość uchwytu scrolla
+            scrollKnobDrawable.setMinHeight(48); // Wysokość uchwytu scrolla
+
+            scrollBarDrawable.setMinWidth(16);   // Szerokość paska scrolla
+            scrollBarDrawable.setMinHeight(16);  // Wysokość elementu paska scrolla
+
+            scrollStyle.vScrollKnob = scrollKnobDrawable;
+            scrollStyle.vScroll = scrollBarDrawable;
+
+        } catch (Exception e) {
+            // Fallback - użyj domyślnego stylu ale zmień rozmiar
+            scrollStyle = new ScrollPane.ScrollPaneStyle(skin.get(ScrollPane.ScrollPaneStyle.class));
+
+            // Jeśli masz dostęp do domyślnych drawable, też możesz ustawić ich rozmiar
+            if (scrollStyle.vScrollKnob != null) {
+                scrollStyle.vScrollKnob.setMinWidth(12);
+                scrollStyle.vScrollKnob.setMinHeight(24);
+            }
+            if (scrollStyle.vScroll != null) {
+                scrollStyle.vScroll.setMinWidth(12);
+                scrollStyle.vScroll.setMinHeight(12);
+            }
+        }
+
+        ScrollPane scrollPane = new ScrollPane(upgradeTable, scrollStyle);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(false, false);
 
+// Dodatkowe ustawienia dla lepszej kontroli nad scrollem
+        scrollPane.setScrollBarPositions(false, true); // Scroll bar po prawej stronie
+        scrollPane.setVariableSizeKnobs(false); // Stały rozmiar uchwytu scrolla
+
         container = new Table();
-        container.top().padTop(50);
+        container.top();
         container.add(scrollPane).grow();
         container.setSize(100, 100);
     }
@@ -122,6 +170,9 @@ public class UpgradesUI {
 
             // Aktualizuj tekst ceny (na wypadek zmiany)
             costLabel.setText(info.cost.toReadableString() + "$");
+            Label effectsLabel = effectsLabels.get(i);
+            effectsLabel.setText(buildEffectsText(info));
+
         }
     }
 

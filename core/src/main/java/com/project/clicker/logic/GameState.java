@@ -1,6 +1,7 @@
 package com.project.clicker.logic;
 
 import com.project.clicker.logic.Upgrade.Upgrade;
+import com.project.clicker.logic.managers.IncomeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class GameState {
     private int factoriesNumber;
     private int shopsNumber;
     private int apartmentsNumber;
+    private int specialPoints;
     private IncomeManager incomeManager;
 
     public GameState() {
@@ -22,14 +24,38 @@ public class GameState {
         this.factoriesNumber = 0;
         this.shopsNumber = 0;
         this.apartmentsNumber = 0;
+        this.specialPoints = 0;
         this.upgrades = new ArrayList<>();
     }
 
-    public void setIncomeManager(IncomeManager incomeManager) {
-        this.incomeManager = incomeManager;
+    public int getSpecialPoints() {
+        return specialPoints;
     }
-    public IncomeManager getIncomeManager() {
-        return incomeManager;
+
+    public void addSpecialPoints(int points) {
+        this.specialPoints += points;
+    }
+
+    public void substractSpecialPoints(int points) {
+        this.specialPoints -= points;
+    }
+
+    public void reset() {
+        factoriesNumber = 0;
+        shopsNumber = 0;
+        population = BigNumber.ZERO();
+        apartmentsNumber = 0;
+    }
+
+    public String getStateInfo() {
+        StringBuilder info = new StringBuilder();
+        info
+            .append("SpecialPoints: " + specialPoints + "\n")
+            .append("Shops: " + shopsNumber + "\n")
+            .append("Apartments: " + apartmentsNumber + "\n")
+            .append("Population: " + population + "\n")
+            .append("Factories: " + factoriesNumber + "\n");
+        return info.toString();
     }
 
     // Gettery i settery dla BigNumber

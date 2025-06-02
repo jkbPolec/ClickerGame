@@ -1,8 +1,8 @@
 package com.project.clicker.logic.Upgrade;
 
 import com.project.clicker.logic.GameState;
-import com.project.clicker.logic.IncomeManager;
-import com.project.clicker.logic.PopulationManager;
+import com.project.clicker.logic.managers.IncomeManager;
+import com.project.clicker.logic.managers.PopulationManager;
 import com.project.clicker.logic.BigNumber;
 
 public class BuildingUpgrade extends Upgrade {
@@ -39,7 +39,6 @@ public class BuildingUpgrade extends Upgrade {
             switch (type) {
                 case FACTORY:
                     state.addFactory(1);
-                    incomeManager.increaseFactoryIncome(new BigNumber(2));
                     break;
                 case SHOP:
                     state.addShop(1);

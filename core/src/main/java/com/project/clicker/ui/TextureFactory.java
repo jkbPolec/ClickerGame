@@ -25,6 +25,8 @@ public class TextureFactory {
             case "GREY":
                 bgPixmap.setColor(0.5f, 0.5f, 0.5f, 0.5f);
                 break;
+            case "SCROLL_BACKGROUND":
+                bgPixmap.setColor(0.56f, 0.24f, 0.22f, 1);
 
 
         }
