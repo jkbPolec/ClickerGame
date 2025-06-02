@@ -6,16 +6,20 @@ import com.project.clicker.logic.managers.IncomeManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the current state of the game, including resources, upgrades, and building counts.
+ */
 public class GameState {
     private BigNumber money;
     private BigNumber clicks;
     private BigNumber population;
-    private List<Upgrade> upgrades;
+
     private int factoriesNumber;
     private int shopsNumber;
     private int apartmentsNumber;
     private int specialPoints;
-    private IncomeManager incomeManager;
+
+    private final List<Upgrade> upgrades;
 
     public GameState() {
         this.money = BigNumber.ZERO();
@@ -28,37 +32,8 @@ public class GameState {
         this.upgrades = new ArrayList<>();
     }
 
-    public int getSpecialPoints() {
-        return specialPoints;
-    }
+    // === Resource Management ===
 
-    public void addSpecialPoints(int points) {
-        this.specialPoints += points;
-    }
-
-    public void substractSpecialPoints(int points) {
-        this.specialPoints -= points;
-    }
-
-    public void reset() {
-        factoriesNumber = 0;
-        shopsNumber = 0;
-        population = BigNumber.ZERO();
-        apartmentsNumber = 0;
-    }
-
-    public String getStateInfo() {
-        StringBuilder info = new StringBuilder();
-        info
-            .append("SpecialPoints: " + specialPoints + "\n")
-            .append("Shops: " + shopsNumber + "\n")
-            .append("Apartments: " + apartmentsNumber + "\n")
-            .append("Population: " + population + "\n")
-            .append("Factories: " + factoriesNumber + "\n");
-        return info.toString();
-    }
-
-    // Gettery i settery dla BigNumber
     public BigNumber getMoney() {
         return money;
     }
@@ -68,7 +43,7 @@ public class GameState {
     }
 
     public void addMoney(long amount) {
-        this.money = this.money.add(amount);
+        this.addMoney(new BigNumber(amount));
     }
 
     public void subtractMoney(BigNumber amount) {
@@ -79,37 +54,96 @@ public class GameState {
         return clicks;
     }
 
-    public void addClicks(BigNumber clicks) {
-        this.clicks = this.clicks.add(clicks);
+    public void addClicks(BigNumber amount) {
+        this.clicks = this.clicks.add(amount);
     }
 
-    public void addClicks(long clicks) {
-        this.clicks = this.clicks.add(clicks);
+    public void addClicks(long amount) {
+        this.addClicks(new BigNumber(amount));
     }
 
     public BigNumber getPopulation() {
         return population;
     }
 
-    public void addPopulation(BigNumber population) {
-        this.population = this.population.add(population);
+    public void addPopulation(BigNumber amount) {
+        this.population = this.population.add(amount);
     }
 
-    public void addPopulation(long population) {
-        this.population = this.population.add(population);
+    public void addPopulation(long amount) {
+        this.addPopulation(new BigNumber(amount));
     }
 
-    // Pozostałe metody bez zmian
-    public int getFactoriesNumber() { return factoriesNumber; }
-    public int getShopsNumber() { return shopsNumber; }
-    public int getApartmentsNumber() { return apartmentsNumber; }
+    // === Special Points ===
 
-    public void addFactory(int value) { this.factoriesNumber += value; }
-    public void addShop(int value) { this.shopsNumber += value; }
-    public void addApartment(int value) { this.apartmentsNumber += value; }
+    public int getSpecialPoints() {
+        return specialPoints;
+    }
 
-    public void addUpgrade(Upgrade upgrade) { this.upgrades.add(upgrade); }
-    public List<Upgrade> getUpgrades() { return upgrades; }
+    public void addSpecialPoints(int points) {
+        this.specialPoints += points;
+    }
 
+    public void subtractSpecialPoints(int points) {
+        this.specialPoints -= points;
+    }
 
+    // === Buildings ===
+
+    public int getFactoriesNumber() {
+        return factoriesNumber;
+    }
+
+    public void addFactory(int count) {
+        this.factoriesNumber += count;
+    }
+
+    public int getShopsNumber() {
+        return shopsNumber;
+    }
+
+    public void addShop(int count) {
+        this.shopsNumber += count;
+    }
+
+    public int getApartmentsNumber() {
+        return apartmentsNumber;
+    }
+
+    public void addApartment(int count) {
+        this.apartmentsNumber += count;
+    }
+
+    // === Upgrades ===
+
+    public void addUpgrade(Upgrade upgrade) {
+        this.upgrades.add(upgrade);
+    }
+
+    public List<Upgrade> getUpgrades() {
+        return upgrades;
+    }
+
+    // === Utility ===
+
+    /**
+     * Resets key parts of the game state to their initial values (excluding money/clicks).
+     */
+    public void reset() {
+        this.factoriesNumber = 0;
+        this.shopsNumber = 0;
+        this.apartmentsNumber = 0;
+        this.population = BigNumber.ZERO();
+    }
+
+    /**
+     * Returns a string summarizing key game statistics.
+     */
+    public String getStateInfo() {
+        return "SpecialPoints: " + specialPoints + "\n" +
+            "Shops: " + shopsNumber + "\n" +
+            "Apartments: " + apartmentsNumber + "\n" +
+            "Population: " + population + "\n" +
+            "Factories: " + factoriesNumber + "\n";
+    }
 }

@@ -28,7 +28,7 @@ public abstract class Item {
     }
 
     public String getDescription() {
-        return name + "\n" + description + "\n" + effect.getDescription();
+        return "Cost: " + cost + " SP" + "\n" + name + "\n" + effect.getDescription() + "\n";
     }
 
     public String getAllData() {
@@ -55,7 +55,7 @@ public abstract class Item {
         if (state.getSpecialPoints() <= cost) {
             return false; // Not enough money
         }
-        state.substractSpecialPoints(cost);
+        state.subtractSpecialPoints(cost);
         isBought = true;
         use(incomeManager); // Apply the effect after buying
         return true;

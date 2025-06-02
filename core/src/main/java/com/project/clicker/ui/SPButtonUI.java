@@ -71,7 +71,7 @@ public class SPButtonUI {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!btnSP1.isDisabled()) {
-                    resetManager.buySpecialPoints(1);
+                    resetManager.purchaseSpecialPoints(1);
                     update();
                 }
             }
@@ -99,7 +99,7 @@ public class SPButtonUI {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!btnSP10.isDisabled()) {
-                    resetManager.buySpecialPoints(10);
+                    resetManager.purchaseSpecialPoints(10);
                     update();
                 }
             }
@@ -127,7 +127,7 @@ public class SPButtonUI {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!btnSP100.isDisabled()) {
-                    resetManager.buySpecialPoints(100);
+                    resetManager.purchaseSpecialPoints(100);
                     update();
                 }
             }

@@ -39,7 +39,7 @@ public class ClickingUI {
                 System.out.println(state.getClicks());
                 state.addClicks(1);
                 System.out.println(state.getClicks());
-                incomeManager.addMoneyFromClick();
+                incomeManager.processClick();
 
                 clickLabel.setText("Clicks: " + state.getClicks());
                 SoundManager.getInstance().playRandomClick();
@@ -66,7 +66,7 @@ public class ClickingUI {
         imageButton.setOrigin(150, 150);
 
         moneyLabel = new Label("Money: 0$", labelStyle);
-        passiveIncomeLabel = new Label("Passive income: " + incomeManager.getPassiveIncome() + "$", labelStyle);
+        passiveIncomeLabel = new Label("Passive income: " + incomeManager.getCurrentPassiveIncome() + "$", labelStyle);
         table.add(moneyLabel).row();
         table.add(passiveIncomeLabel).row();
     }
@@ -79,6 +79,6 @@ public class ClickingUI {
         clickLabel.setText("Clicks: " + state.getClicks());
         money = state.getMoney();
         moneyLabel.setText("Money: " + money.toReadableString() + "$");
-        passiveIncomeLabel.setText("Passive income: " + incomeManager.getPassiveIncome() + "$");
+        passiveIncomeLabel.setText("Passive income: " + incomeManager.getCurrentPassiveIncome() + "$");
     }
 }

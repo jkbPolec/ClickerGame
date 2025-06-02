@@ -14,12 +14,12 @@ public class IncreaseClickMoneyEffect implements IItemEffect {
     @Override
     public void apply(IncomeManager incomeManager) {
         System.out.println("Increase click money");
-        incomeManager.multiplyBasicMoneyPerClick(multiplier);
+        incomeManager.multiplyBaseClickIncome(multiplier);
     }
 
 
     @Override
     public String getDescription() {
-        return "Zwiększa pieniądze za klik x" + multiplier;
+        return "Increase click money by " + multiplier;
     }
 }

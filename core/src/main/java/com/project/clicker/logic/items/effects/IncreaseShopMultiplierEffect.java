@@ -15,12 +15,11 @@ public class IncreaseShopMultiplierEffect implements IItemEffect {
 
     @Override
     public void apply(IncomeManager incomeManager) {
-        System.out.println("Increase click money");
-        incomeManager.multiplyBasicIncomeFromShops(multiplier);
+        incomeManager.multiplyBaseShopsIncome(multiplier);
     }
 
     @Override
     public String getDescription() {
-        return "Zwiększa mnożnik sklepu o " + multiplier;
+        return "Increase income from shops by " + multiplier;
     }
 }
