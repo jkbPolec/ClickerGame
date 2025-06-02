@@ -181,15 +181,15 @@ public class UpgradesUI {
 
         if (info.normalEffects != null) {
             for (Map.Entry<NormalUpgradeType, Double> entry : info.normalEffects.entrySet()) {
-                sb.append("  ").append(entry.getKey()).append(": x").append(entry.getValue()).append("\n");
+                sb.append("  ").append(entry.getKey()).append(": +").append(entry.getValue()).append("\n");
             }
         }
 
         if (info.buildingType != null) {
-            sb.append("  Buduje: ").append(info.buildingType).append("\n");
+            sb.append("  Builds: ").append(info.buildingType).append("\n");
         }
 
-        sb.append("  Użyto: ").append(info.timesActivated).append("x");
+        sb.append("  Times activated: ").append(info.timesActivated).append("x");
         if (info.isBonus) {
             sb.append(" [BONUS]");
         }

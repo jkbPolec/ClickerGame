@@ -11,7 +11,7 @@ import com.project.clicker.logic.GameState;
  */
 public class IncomeManager {
     private static final float PASSIVE_INCOME_TICK_RATE = 1.0f;
-    private static final BigNumber DEBUG_MONEY_AMOUNT = new BigNumber(100000);
+    private static final BigNumber DEBUG_MONEY_AMOUNT = BigNumber.TEN().pow(40);
     private static final BigNumber INITIAL_PASSIVE_INCOME = new BigNumber(10);
 
     private final GameState gameState;
