@@ -29,7 +29,7 @@ public abstract class Item {
     }
 
     public String getDescription() {
-        return name + "\n" + description + "\n" + effect.getDescription();
+        return name + "\n" + cost.toString() + "\n" + effect.getDescription();
     }
 
     public String getAllData() {

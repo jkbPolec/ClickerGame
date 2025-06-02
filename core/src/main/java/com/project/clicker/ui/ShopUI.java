@@ -1,6 +1,8 @@
 package com.project.clicker.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.project.clicker.logic.GameState;
 import com.project.clicker.logic.items.Item;
@@ -46,14 +49,29 @@ public class ShopUI extends Table {
 
 
         int col = 0;
+        Texture texture = new Texture(Gdx.files.internal("upgradeButton.png"));
+        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        TextureRegion region = new TextureRegion(texture);
+
+        // Ładowanie tła przycisków
+        Texture buttonTexture = new Texture(Gdx.files.internal("upgradeButton.png"));
+        buttonTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        TextureRegion buttonRegion = new TextureRegion(buttonTexture);
+
+        // Styl przycisków dla itemów
+        ImageButton.ImageButtonStyle itemButtonStyle = new ImageButton.ImageButtonStyle();
+        itemButtonStyle.up = new TextureRegionDrawable(buttonRegion);
+        itemButtonStyle.down = new TextureRegionDrawable(buttonRegion).tint(Color.GRAY);
+        itemButtonStyle.disabled = new TextureRegionDrawable(buttonRegion).tint(Color.DARK_GRAY);
+
+
+        // Pętla przez itemy
         for (Item item : items) {
-            Texture texture = new Texture(Gdx.files.internal("items/"+ item.getImage()));
-            Image image = new Image(new TextureRegion(texture));
+            Texture itemTexture = new Texture(Gdx.files.internal("items/" + item.getImage()));
+            Image image = new Image(new TextureRegion(itemTexture));
 
-
-            ImageButton button = new ImageButton(skin);
+            ImageButton button = new ImageButton(itemButtonStyle); // Użyjemy nowego stylu
             button.add(image).size(140, 140);
-
 
             button.addListener(new ClickListener() {
                 @Override
@@ -66,13 +84,14 @@ public class ShopUI extends Table {
 
                 @Override
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    // Ustaw tekst i pozycję okienka opisu
                     descWindow.clear();
-                    descWindow.add(new Label(item.getDescription(), skin)).pad(10);
+                    BitmapFont pixelFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
+                    descWindow.getTitleLabel().setText("NAME");
+                    
+                    descWindow.add(new Label(item.getDescription(), new Label.LabelStyle(pixelFont, Color.WHITE))).pad(10);
                     descWindow.pack();
                     descWindow.toFront();
 
-                    // Pozycja pod przyciskiem
                     Vector2 pos = button.localToStageCoordinates(new Vector2(0, 0));
                     descWindow.setPosition(pos.x, pos.y - descWindow.getHeight() - 10);
                     descWindow.setVisible(true);
@@ -82,7 +101,6 @@ public class ShopUI extends Table {
                 public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                     descWindow.setVisible(false);
                 }
-
             });
 
             this.add(button).size(150, 150).pad(10);
@@ -90,6 +108,7 @@ public class ShopUI extends Table {
             col++;
             if (col % 4 == 0) this.row();
         }
+
         if (col % 4 != 0) this.row();
     }
 
